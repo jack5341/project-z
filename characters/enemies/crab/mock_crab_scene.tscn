@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://x62cw4vdrs20"]
+
+[ext_resource type="PackedScene" uid="uid://bpekosltikvao" path="res://characters/enemies/crab/crab.tscn" id="1_o24i6"]
+[ext_resource type="Script" uid="uid://dshalxabrsdqb" path="res://utils/combat/damage_area.gd" id="2_mwe5d"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_28h25"]
+vertices = PackedVector3Array(-4.5, 0.5, -4.5, -4.5, 0.5, 4.5, 4.5, 0.5, 4.5, 4.5, 0.5, -4.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="QuadMesh" id="QuadMesh_28h25"]
+size = Vector2(10, 10)
+orientation = 1
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_o4ev1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o4ev1"]
+radius = 1.125
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ptia"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ptx21"]
+material = SubResource("StandardMaterial3D_6ptia")
+radius = 0.87
+height = 4.485
+
+[node name="MockCrabScene" type="Node3D"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_28h25")
+
+[node name="Ground" type="MeshInstance3D" parent="NavigationRegion3D"]
+mesh = SubResource("QuadMesh_28h25")
+skeleton = NodePath("../..")
+
+[node name="staticbody" type="StaticBody3D" parent="NavigationRegion3D/Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Ground/staticbody"]
+shape = SubResource("WorldBoundaryShape3D_o4ev1")
+
+[node name="Crab" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.062625, 0, 2.916954)
+target_node = NodePath("../Target")
+
+[node name="Target" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7036443, 0, -2.675561)
+
+[node name="DamageArea" type="Area3D" parent="Target"]
+script = ExtResource("2_mwe5d")
+
+[node name="DamageHitbox" type="CollisionShape3D" parent="Target/DamageArea"]
+shape = SubResource("SphereShape3D_o4ev1")
+
+[node name="TargetMesh" type="MeshInstance3D" parent="Target"]
+mesh = SubResource("SphereMesh_ptx21")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9172548, 0.39830086, 0, -0.39830086, 0.9172548, 0, 2.2619483, 6.675088)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.3882073, 0.9215721, 0, -0.9215721, 0.3882073, 0, 7.301201, 12.409823)

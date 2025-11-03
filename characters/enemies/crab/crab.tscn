@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://bpekosltikvao"]
+
+[ext_resource type="Script" uid="uid://bw5g8da3jxfb3" path="res://characters/enemies/crab/crab.gd" id="1_66stj"]
+[ext_resource type="Script" uid="uid://3nnvvh8kvbfo" path="res://utils/state/state_machine.gd" id="2_gwp0s"]
+[ext_resource type="Script" uid="uid://chv4ntxkhgl6e" path="res://characters/enemies/crab/enemy_on_ship_state.gd" id="3_ggo2l"]
+[ext_resource type="Script" uid="uid://bhsoklb0g54lu" path="res://characters/enemies/crab/enemy_climbing_ship_state.gd" id="4_p8c51"]
+[ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="5_ae4w6"]
+[ext_resource type="Texture2D" uid="uid://dengkskkgif6q" path="res://characters/enemies/crab/crab.png" id="5_cl3ub"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pm1ix"]
+radius = 0.4975586
+height = 0.9951172
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_p8c51"]
+radius = 0.745
+
+[node name="Crab" type="CharacterBody3D" groups=["enemies"]]
+script = ExtResource("1_66stj")
+
+[node name="MovementStateHandler" type="Node" parent="."]
+script = ExtResource("2_gwp0s")
+
+[node name="ClimbingShipState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("body", "next_state")]
+script = ExtResource("4_p8c51")
+body = NodePath("../..")
+target_height = 2.0
+next_state = NodePath("../OnShipState")
+
+[node name="OnShipState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("nav_agent", "body")]
+script = ExtResource("3_ggo2l")
+nav_agent = NodePath("../../NavigationAgent3D")
+body = NodePath("../..")
+speed = 3.0
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.831331, 0)
+pixel_size = 0.007
+texture = ExtResource("5_cl3ub")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_pm1ix")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="AttackableBody" type="Area3D" parent="."]
+script = ExtResource("5_ae4w6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5733756, 0)
+shape = SubResource("SphereShape3D_p8c51")
+
+[connection signal="on_break" from="AttackableBody" to="." method="queue_free"]
