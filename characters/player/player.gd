@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
-@onready var sprite_3d: Sprite3D = $RotationOffset/Sprite3D
-@onready var camera_3d: Camera3D = $RotationOffset/Sprite3D/Camera3D
+@onready var model: Sprite3D = $RotationOffset/Model
+@onready var camera: Camera3D = $RotationOffset/Model/Camera3D
 
 @export var move_speed: float = 13.0
 @export var gravity: float = 40.0
@@ -58,16 +58,16 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	camera_3d.top_level = true
-	camera_offset = camera_3d.global_position - global_position
-	sprite_3d.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+	camera.top_level = true
+	camera_offset = camera.global_position - global_position
+	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
 
-	camera_3d.global_position = global_position + camera_offset
-	camera_3d.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera_3d.current = true
-	camera_3d.size = camera_size
-	camera_3d.near = camera_near
-	camera_3d.far = camera_far
+	camera.global_position = global_position + camera_offset
+	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	camera.current = true
+	camera.size = camera_size
+	camera.near = camera_near
+	camera.far = camera_far
 
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
@@ -82,7 +82,7 @@ func _physics_process(delta: float) -> void:
 
 	direction = direction.normalized()
 	if direction != Vector3.ZERO:
-		var cam_move = camera_3d.global_transform.basis * direction
+		var cam_move = camera.global_transform.basis * direction
 		cam_move.y = 0.0
 		direction = cam_move.normalized()
 
@@ -137,7 +137,7 @@ func _physics_process(delta: float) -> void:
 			is_dashing = true
 			dash_timer = dash_duration
 
-			var cam_space = camera_3d.global_transform.basis * direction
+			var cam_space = camera.global_transform.basis * direction
 			cam_space.y = 0.0
 			if cam_space.length() == 0:
 				dash_direction = -global_transform.basis.z
@@ -169,29 +169,29 @@ func _physics_process(delta: float) -> void:
 			velocity.z = 0.0
 
 	move_and_slide()
-	camera_3d.global_position = global_position + camera_offset
+	camera.global_position = global_position + camera_offset
 	var cam_target_size = camera_size + 5.0 if (is_sprinting and is_moving and stamina > 0.0) else camera_size
 	var cam_target_far = camera_far + 5.0 if (is_sprinting and is_moving and stamina > 0.0) else camera_far
 	var cam_lerp_w = min(1.0, camera_sprint_smooth * delta)
-	camera_3d.size = lerp(camera_3d.size, cam_target_size, cam_lerp_w)
-	camera_3d.far = lerp(camera_3d.far, cam_target_far, cam_lerp_w)
+	camera.size = lerp(camera.size, cam_target_size, cam_lerp_w)
+	camera.far = lerp(camera.far, cam_target_far, cam_lerp_w)
 
 	if is_moving and is_on_floor() and not is_dashing:
 		wobble_timer += delta * wobble_speed
 		var wobble_y = sin(wobble_timer) * wobble_amplitude
 		var wobble_x = cos(wobble_timer * 0.5) * wobble_amplitude * 0.5
-		sprite_3d.position.y = wobble_y
-		sprite_3d.position.x = wobble_x
+		model.position.y = wobble_y
+		model.position.x = wobble_x
 	else:
-		sprite_3d.position.y = lerp(sprite_3d.position.y, 0.0, delta * 10.0)
-		sprite_3d.position.x = lerp(sprite_3d.position.x, 0.0, delta * 10.0)
+		model.position.y = lerp(model.position.y, 0.0, delta * 10.0)
+		model.position.x = lerp(model.position.x, 0.0, delta * 10.0)
 
 	if is_jumping:
 		jump_anim_timer += delta
 		var t = jump_anim_timer / jump_anim_duration
 		if t < 0.5:
-			sprite_3d.scale = Vector3(1.0, 1.2 - t * 0.4, 1.0)
+			model.scale = Vector3(1.0, 1.2 - t * 0.4, 1.0)
 		else:
-			sprite_3d.scale = Vector3(1.0, 0.9 + sin(t * PI) * 0.1, 1.0)
+			model.scale = Vector3(1.0, 0.9 + sin(t * PI) * 0.1, 1.0)
 	else:
-		sprite_3d.scale = sprite_3d.scale.lerp(Vector3.ONE, delta * 10.0)
+		model.scale = model.scale.lerp(Vector3.ONE, delta * 10.0)
