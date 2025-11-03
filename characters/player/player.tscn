@@ -9,6 +9,7 @@ size = Vector3(3.5654297, 3.5855637, 3.5848846)
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_xxgcw")
 camera = NodePath("RotationOffset/Sprite3D/Camera3D")
+dash_cooldown = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47369576, 0.03885269, -0.028800488)
@@ -22,7 +23,7 @@ alpha_cut = 2
 texture = ExtResource("1_508ok")
 
 [node name="Camera3D" type="Camera3D" parent="RotationOffset/Sprite3D"]
-transform = Transform3D(1, 0, 0, 0, 0.9659259, -0.25881913, 0, 0.25881913, 0.9659259, 0, -3.0830307, 20.9586)
+transform = Transform3D(1, 0, 0, 0, 0.9659259, -0.25881913, 0, 0.25881913, 0.9659259, 0, -6.6185665, 32.979412)
 projection = 1
 current = true
-size = 10.0
+size = 14.95
