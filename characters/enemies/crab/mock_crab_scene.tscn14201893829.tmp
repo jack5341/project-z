@@ -4,21 +4,20 @@
 [ext_resource type="Script" uid="uid://dshalxabrsdqb" path="res://utils/combat/damage_area.gd" id="2_mwe5d"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_28h25"]
-vertices = PackedVector3Array(9.957642, 0.41869164, 4.5294895, 15.457642, 0.41869164, 4.5294895, 15.457642, 0.41869164, -1.9705105, -9.792358, 0.41869164, 4.5294895, -9.542358, 0.66869164, 5.7794895, 9.707642, 0.66869164, 5.7794895, -15.542358, 0.41869164, -25.97051, -15.542358, 0.41869164, 4.5294895, 18.457642, 0.41869164, -25.97051, 18.457642, 0.41869164, -2.2205105)
-polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(5, 3, 0), PackedInt32Array(3, 7, 2), PackedInt32Array(2, 7, 6), PackedInt32Array(2, 6, 8), PackedInt32Array(8, 9, 2), PackedInt32Array(2, 0, 3)]
+vertices = PackedVector3Array(-4.5, 0.5, -4.5, -4.5, 0.5, 4.5, 4.5, 0.5, 4.5, 4.5, 0.5, -4.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [sub_resource type="QuadMesh" id="QuadMesh_28h25"]
-size = Vector2(31.705, 25.56)
+size = Vector2(10, 10)
 orientation = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_sk15x"]
-size = Vector3(34.982483, 1.210083, 31.225525)
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_o4ev1"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_mwe5d"]
 size = Vector3(20.035, 8.9, 1.37)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mwe5d"]
-size = Vector3(19.967651, 23.609985, 1)
+size = Vector3(19.967651, 8.87915, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_o4ev1"]
 radius = 1.125
@@ -37,58 +36,35 @@ height = 4.485
 navigation_mesh = SubResource("NavigationMesh_28h25")
 
 [node name="Ground" type="MeshInstance3D" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.939871)
 mesh = SubResource("QuadMesh_28h25")
 skeleton = NodePath("../..")
 
 [node name="staticbody" type="StaticBody3D" parent="NavigationRegion3D/Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Ground/staticbody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.448883, -0.6141968, -2.9178772)
-shape = SubResource("BoxShape3D_sk15x")
+shape = SubResource("WorldBoundaryShape3D_o4ev1")
 
 [node name="ShipWall" type="MeshInstance3D" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.484177, 5.6150866)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.1771336, 5.6150866)
 mesh = SubResource("BoxMesh_mwe5d")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ShipWall"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ShipWall/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1035156e-05, -7.349182, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1035156e-05, 0.016235352, 0)
 shape = SubResource("BoxShape3D_mwe5d")
 
 [node name="Crab" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.460443, -5.887216, 9.008687)
-target_node = NodePath("../Target")
-
-[node name="Crab2" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7918878, -7.9228406, 9.008687)
-target_node = NodePath("../Target")
-
-[node name="Crab3" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.238189, -2.1803517, 9.008687)
-target_node = NodePath("../Target")
-
-[node name="Crab4" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.460443, -5.887216, 15.749197)
-target_node = NodePath("../Target")
-
-[node name="Crab5" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1130238, -7.9228406, 17.344513)
-target_node = NodePath("../Target")
-
-[node name="Crab6" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.204404, -9.607582, 20.606739)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8591394, -8.497534, 9.008687)
 target_node = NodePath("../Target")
 
 [node name="Target" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7036443, 0, -7.0466266)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7036443, 0, -2.675561)
 
 [node name="DamageArea" type="Area3D" parent="Target"]
 script = ExtResource("2_mwe5d")
 
 [node name="DamageHitbox" type="CollisionShape3D" parent="Target/DamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9370694, 0)
 shape = SubResource("SphereShape3D_o4ev1")
 
 [node name="TargetMesh" type="MeshInstance3D" parent="Target"]

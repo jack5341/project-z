@@ -6,20 +6,41 @@ class_name EnemyOnShipState
 
 @export var body:CharacterBody3D
 
-@export var speed = 10.0
+@export var max_speed = 8.0
+
+@export var acceleration = 30.0
 
 @export var gravity = 9.8
 
 @export var max_fall_speed = 10.0
 
-@export var min_distance = 0.5
+@export var min_distance = 5
 
+# Make the crab attack the player / target from different directions
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var random_target_offset:Vector3
+
+func _ready() -> void:
+	update_random_target_offset()
+
+func update_random_target_offset():
+	random_target_offset = Vector3(rng.randf_range(-3, 3), 0, rng.randf_range(-3, 3))
+	
 func set_target(target: Vector3):
-	nav_agent.target_position = target
+	nav_agent.target_position = target + random_target_offset
 
 func set_horizontal_velocity(velocity:Vector2):
 	body.velocity.x = velocity.x
 	body.velocity.z = velocity.y
+	
+func limit_horizontal_velocity():
+	var horizontal_velocity_scalar = get_horizontal_velocity().length()
+	if(horizontal_velocity_scalar > max_speed):
+		body.velocity.x /= horizontal_velocity_scalar / max_speed
+		body.velocity.z /= horizontal_velocity_scalar / max_speed
+
+func get_horizontal_velocity() -> Vector2:
+	return Vector2(body.velocity.x, body.velocity.z)
 
 func apply_gravity(delta:float):
 	if(!body.is_on_floor()):
@@ -31,9 +52,21 @@ func get_target_dir() -> Vector2:
 	var target3d = (nav_agent.get_next_path_position() - body.global_position).normalized()
 	return Vector2(target3d.x, target3d.z)
 	 
+func accelerate_towards_target(delta:float):
+	var curr_horizontal_velocity := get_horizontal_velocity()
+	set_horizontal_velocity(
+		curr_horizontal_velocity + 
+		get_target_dir() * delta * acceleration
+		)
+
 func state_process(_delta:float):
-	if(nav_agent.distance_to_target() < min_distance):
-		set_horizontal_velocity(Vector2.ZERO)
-	else:
-		set_horizontal_velocity(speed * get_target_dir())
+	# If close to the player, jump attack the player
+	if(body.is_on_floor() && nav_agent.distance_to_target() < min_distance):
+		set_horizontal_velocity(get_target_dir() * 10.0)
+		body.velocity.y += 5.0
+		update_random_target_offset()
+	# If on floor, accelerate towards target
+	elif(body.is_on_floor()):
+		accelerate_towards_target(_delta)
+		limit_horizontal_velocity()
 	apply_gravity(_delta)

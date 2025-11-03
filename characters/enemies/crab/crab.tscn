@@ -23,7 +23,7 @@ script = ExtResource("2_gwp0s")
 [node name="ClimbingShipState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("body", "next_state")]
 script = ExtResource("4_p8c51")
 body = NodePath("../..")
-target_height = 2.0
+speed = 5.0
 next_state = NodePath("../OnShipState")
 
 [node name="OnShipState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("nav_agent", "body")]
