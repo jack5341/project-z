@@ -66,3 +66,18 @@ move_dash={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[shader_globals]
+
+wind_intensity={
+"type": "float",
+"value": 0.0
+}
+wind_direction={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
+player_position={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
