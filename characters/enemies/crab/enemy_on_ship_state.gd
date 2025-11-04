@@ -92,6 +92,8 @@ func state_process(_delta:float):
 	# Attack if close to player (and in the air)
 	if(!body.is_on_floor() && 
 		time_since_attack > attack_delay && 
-		nav_agent.distance_to_target() < attack_distance):
+		nav_agent.distance_to_target() < attack_distance &&
+		!has_attacked_in_air
+		):
 		attack()
 	apply_gravity(_delta)

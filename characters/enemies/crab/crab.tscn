@@ -20,6 +20,7 @@ radius = 0.745
 viewport_path = NodePath("HpBar/SubViewport")
 
 [node name="Crab" type="CharacterBody3D" groups=["enemies"]]
+collision_layer = 4
 script = ExtResource("1_66stj")
 
 [node name="MovementStateHandler" type="Node" parent="."]

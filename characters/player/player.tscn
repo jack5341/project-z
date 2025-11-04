@@ -16,6 +16,7 @@ radius = 0.82373047
 height = 2.9016113
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
 script = ExtResource("1_xxgcw")
 max_health = 20.0
 health = 20.0
