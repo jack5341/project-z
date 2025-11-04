@@ -1,23 +1,19 @@
 extends CharacterBody3D
 
 @onready var model: Sprite3D = $RotationOffset/Model
-@onready var camera: Camera3D = $RotationOffset/Model/Camera3D
+@onready var healthbar: ProgressBar = $CanvasLayer/SubViewport/Healthbar/ProgressBar
 
 @export var move_speed: float = 13.0
 @export var gravity: float = 40.0
-
-var camera_offset: Vector3 = Vector3.ZERO
 
 # Wobble effect variables
 var wobble_amplitude: float = 0.05
 var wobble_speed: float = 8.0
 var wobble_timer: float = 0.0
 
-@export_category("Camera")
-@export var camera_near: float = 0.05
-@export var camera_size: float = 14.0
-@export var camera_far: float = 4000.0
-@export var camera_sprint_smooth: float = 8.0
+@export_category("Stats")
+@export var max_health: float = 100
+@export var health: float = 100
 
 @export_category("Stamina")
 @export var max_stamina: float = 100.0
@@ -44,6 +40,7 @@ var dash_direction: Vector3 = Vector3.ZERO
 @export_category("Sprint")
 @export var double_press_threshold = 0.3
 @export var sprint_speed: float = 16.0
+
 var tap_elapsed_forward: float = 9999.0
 var tap_elapsed_backward: float = 9999.0
 var tap_elapsed_left: float = 9999.0
@@ -58,16 +55,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	camera.top_level = true
-	camera_offset = camera.global_position - global_position
 	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-
-	camera.global_position = global_position + camera_offset
-	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.current = true
-	camera.size = camera_size
-	camera.near = camera_near
-	camera.far = camera_far
+	
+	healthbar.max_value = max_health
+	healthbar.value = health
 
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
@@ -81,11 +72,6 @@ func _physics_process(delta: float) -> void:
 		direction.x += 1
 
 	direction = direction.normalized()
-	if direction != Vector3.ZERO:
-		var cam_move = camera.global_transform.basis * direction
-		cam_move.y = 0.0
-		direction = cam_move.normalized()
-
 	var is_moving = direction != Vector3.ZERO
 
 	tap_elapsed_forward += delta
@@ -136,15 +122,7 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("move_dash") and is_moving and dash_cooldown_timer <= 0.0:
 			is_dashing = true
 			dash_timer = dash_duration
-
-			var cam_space = camera.global_transform.basis * direction
-			cam_space.y = 0.0
-			if cam_space.length() == 0:
-				dash_direction = -global_transform.basis.z
-			else:
-				dash_direction = cam_space.normalized()
-
-			# set velocity for the dash (keep existing y)
+			dash_direction = direction
 			var cur_y = velocity.y
 			velocity = dash_direction * dash_force
 			velocity.y = cur_y
@@ -161,7 +139,6 @@ func _physics_process(delta: float) -> void:
 
 	if not is_dashing:
 		if direction != Vector3.ZERO:
-			rotation.y = lerp_angle(rotation.y, atan2(direction.x, direction.z), 0.1)
 			velocity.x = direction.x * speed
 			velocity.z = direction.z * speed
 		else:
@@ -169,12 +146,6 @@ func _physics_process(delta: float) -> void:
 			velocity.z = 0.0
 
 	move_and_slide()
-	camera.global_position = global_position + camera_offset
-	var cam_target_size = camera_size + 5.0 if (is_sprinting and is_moving and stamina > 0.0) else camera_size
-	var cam_target_far = camera_far + 5.0 if (is_sprinting and is_moving and stamina > 0.0) else camera_far
-	var cam_lerp_w = min(1.0, camera_sprint_smooth * delta)
-	camera.size = lerp(camera.size, cam_target_size, cam_lerp_w)
-	camera.far = lerp(camera.far, cam_target_far, cam_lerp_w)
 
 	if is_moving and is_on_floor() and not is_dashing:
 		wobble_timer += delta * wobble_speed
@@ -195,3 +166,12 @@ func _physics_process(delta: float) -> void:
 			model.scale = Vector3(1.0, 0.9 + sin(t * PI) * 0.1, 1.0)
 	else:
 		model.scale = model.scale.lerp(Vector3.ONE, delta * 10.0)
+
+func _take_damage(amount: float) -> void:
+	health = max(health - amount, 0.0)
+	healthbar.value = health
+	if health <= 0.0:
+		_die()
+
+func _die() -> void:
+	pass
