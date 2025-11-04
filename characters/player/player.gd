@@ -2,7 +2,6 @@ extends CharacterBody3D
 
 @onready var model: Sprite3D = $RotationOffset/Model
 @onready var camera: Camera3D = $RotationOffset/Camera3D
-@onready var healthbar: ProgressBar = $Canvas/SubViewport/Healthbar/HealthProgressBar
 @onready var attackable_body: AttackableBody = $AttackableBody
 
 
@@ -16,10 +15,6 @@ var base_camera_offset: Vector3 = Vector3.ZERO
 @export var wobble_amplitude: float = 0.05
 @export var wobble_speed: float = 8.0
 var wobble_timer: float = 0.0
-
-@export_category("Stats")
-@export var max_health: float = 100
-@export var health: float = 100
 
 @export_category("Stamina")
 @export var max_stamina: float = 100.0
@@ -67,8 +62,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-	
-	healthbar.max_value = max_health
 	
 
 func _physics_process(delta: float) -> void:
@@ -181,9 +174,6 @@ func _physics_process(delta: float) -> void:
 			model.scale = Vector3(1.0, 0.9 + sin(t * PI) * 0.1, 1.0)
 	else:
 		model.scale = model.scale.lerp(Vector3.ONE, delta * 10.0)
-	
-	#Update the healthbar
-	healthbar.value = attackable_body.health
 
 func _die() -> void:
 	pass

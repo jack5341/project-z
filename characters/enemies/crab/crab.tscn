@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="5_ae4w6"]
 [ext_resource type="Texture2D" uid="uid://dengkskkgif6q" path="res://characters/enemies/crab/crab.png" id="5_cl3ub"]
 [ext_resource type="PackedScene" uid="uid://dnf7kynmiqvch" path="res://characters/enemies/crab/crab_attack.tscn" id="5_nvo1f"]
-[ext_resource type="Script" uid="uid://bkcfnm31lbmen" path="res://utils/combat/hp_canvas.gd" id="8_ptlxy"]
+[ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="8_ptlxy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pm1ix"]
 radius = 0.4975586
@@ -16,8 +16,8 @@ height = 0.9951172
 [sub_resource type="SphereShape3D" id="SphereShape3D_p8c51"]
 radius = 0.745
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_cl3ub"]
-viewport_path = NodePath("HpBar/SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_nvo1f"]
+viewport_path = NodePath("AttackableBodyHealthbar")
 
 [node name="Crab" type="CharacterBody3D" groups=["enemies"]]
 collision_layer = 4
@@ -53,52 +53,20 @@ shape = SubResource("CapsuleShape3D_pm1ix")
 
 [node name="AttackableBody" type="Area3D" parent="."]
 script = ExtResource("5_ae4w6")
-health = 5.0
+max_health = 5
 body_group = "enemy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackableBody"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5733756, 0)
 shape = SubResource("SphereShape3D_p8c51")
 
-[node name="HpBar" type="CanvasLayer" parent="." node_paths=PackedStringArray("attackable_body")]
-script = ExtResource("8_ptlxy")
-attackable_body = NodePath("../AttackableBody")
-
-[node name="SubViewport" type="SubViewport" parent="HpBar"]
-transparent_bg = true
-size = Vector2i(100, 100)
-
-[node name="Healthbar" type="Control" parent="HpBar/SubViewport"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="HealthProgressBar" type="ProgressBar" parent="HpBar/SubViewport/Healthbar"]
-custom_minimum_size = Vector2(400, 20)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-max_value = 2.0
-
 [node name="Sprite3D2" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.396541, 0)
 billboard = 1
-texture = SubResource("ViewportTexture_cl3ub")
+texture = SubResource("ViewportTexture_nvo1f")
+
+[node name="AttackableBodyHealthbar" parent="." node_paths=PackedStringArray("attackable_body") instance=ExtResource("8_ptlxy")]
+attackable_body = NodePath("../AttackableBody")
 
 [connection signal="on_break" from="AttackableBody" to="." method="queue_free"]
 [connection signal="on_hit" from="AttackableBody" to="." method="knockback"]
