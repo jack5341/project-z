@@ -21,7 +21,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i5arm"]
-size = Vector2(100, 100)
+size = Vector2(500, 500)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j25bp"]
 albedo_color = Color(0.1336976, 0.21011075, 0.14982727, 1)
@@ -46,25 +46,26 @@ shadow_enabled = true
 environment = SubResource("Environment_jsk3o")
 
 [node name="water" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6195526, 0.6820152, 3.7084823)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7040133, 0)
 material_override = ExtResource("1_j25bp")
 mesh = SubResource("PlaneMesh_i5arm")
 
 [node name="Floor" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3793626, 0)
 
 [node name="BottomFloor" type="CSGBox3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8311539, -7.191858, 6.1387844)
 material_override = SubResource("StandardMaterial3D_j25bp")
-size = Vector3(100, 1, 100)
+size = Vector3(500, 1, 500)
 
 [node name="Rocks" type="MultiMeshInstance3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3048563, -5.5623827, 4.9068832)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0640783, 0)
 script = ExtResource("2_d6hyc")
+spawn_count = 3000
+area_size = Vector2(500, 500)
 rock_scene_path = "uid://cdiug2preeho5"
 spawn_on_ready = true
 
 [node name="Ship" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1366892, 0)
 
 [node name="Sprite3D2" type="Sprite3D" parent="Ship"]
 transform = Transform3D(0.2, 0, 0, 0, 0.14142136, -0.14142136, 0, 0.14142136, 0.14142136, 2.1642914, 0.7069247, -5.096032)
