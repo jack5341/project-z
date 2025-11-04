@@ -21,6 +21,10 @@ uniform float foam_strength = 1.0;       // foam brightness multiplier
 uniform float foam_noise_scale = 6.0;    // noise scale for foam texture
 uniform float foam_noise_amp = 0.6;      // noise amplitude for foam mask
 
+// optional external noise texture (allows authoring custom noise)
+uniform sampler2D foam_noise_tex : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform bool use_noise_texture = false;
+
 // small helper functions: value noise + fbm
 float hash(vec2 p){
 	return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123);
@@ -70,38 +74,35 @@ void fragment(){
 	float water_mask = smoothstep(top_y - edge_smooth, top_y + edge_smooth, uv.y);
 	// water_mask = 1.0 for pixels below (i.e. "inside" the water), 0.0 for pixels above
 
-	// depth gradient from top (light) to bottom (dark) inside the water region
-	// compute normalized depth inside water [0..1] where 0 at water top and 1 at bottom
-	float depth_norm = 0.0;
-	if (uv.y >= top_y) {
-		float water_height = 1.0 - top_y;
-		// avoid divide-by-zero when full (top_y==0)
-		depth_norm = (water_height > 0.0001) ? clamp((uv.y - top_y) / water_height, 0.0, 1.0) : 1.0;
-	}
-	// slightly gamma-corrected blend so bottom feels denser
-	float blend_t = pow(depth_norm, 1.2);
+	// depth gradient tied to absolute container depth (top=0 → shallow, bottom=1 → deep)
+	// This ensures at low water levels we don't see the shallow color at all.
+	float depth_abs = clamp(uv.y, 0.0, 1.0);
+	float blend_t = pow(depth_abs, 1.2);
 	vec4 base_color = mix(shallow_color, deep_color, blend_t);
 
-	// Foam generation: concentrated near the crest (top_y) and modulated by noise
-	// foam_noise gives small-scale variation to make foam "lacy"
-	float fnoise = fbm(vec2(uv.x * foam_noise_scale, uv.y * foam_noise_scale + TIME * 0.2));
-	// normalized foam noise
-	fnoise = clamp((fnoise - 0.45) * 2.5, 0.0, 1.0);
+    // Foam generation: concentrated near the crest (top_y) and modulated by noise
+    // Choose between procedural fbm or provided noise texture
+    float fnoise = 0.0;
+    if (use_noise_texture) {
+        // Sample red channel from provided texture; scroll slowly for life
+        fnoise = texture(foam_noise_tex, uv * foam_noise_scale + vec2(TIME * 0.02)).r;
+    } else {
+        fnoise = fbm(vec2(uv.x * foam_noise_scale, uv.y * foam_noise_scale + TIME * 0.2));
+    }
+    // remap/clip to emphasize bright foam speckles only
+    fnoise = clamp((fnoise - 0.45) * 2.5, 0.0, 1.0);
 
-	// foam proximity mask: strongest right at the crest, fading out above/below
+	// foam proximity mask: hard band around the crest (crisp, no blur)
 	float foam_center = abs(uv.y - top_y);
-	float foam_mask = smoothstep(foam_width, 0.0, foam_center); // 1 at center, 0 away
+	float foam_band = step(foam_center, foam_width); // 1 inside band, 0 outside
 	// modulate with noise and only where water exists (so foam sits on the crest)
-	foam_mask *= fnoise * foam_noise_amp * water_mask;
+	float foam_mask = foam_band * fnoise * foam_noise_amp * water_mask;
 
-	// foam color (white-ish), add slight blur by using foam_mask^0.6
-	vec3 foam_col = vec3(1.0, 1.0, 1.0) * pow(foam_mask, 0.8) * foam_strength;
-
-	// combine base water color and foam; use water_mask as alpha for final compositing
-	vec3 final_rgb = base_color.rgb * water_mask + foam_col;
-
-	// final alpha: use water_mask but soften around the crest a bit
-	float final_a = clamp(water_mask + foam_mask * 0.8, 0.0, 1.0);
+	// white-only foam overlay (crisp); avoid pre-multiplying alpha to prevent dark artifacts
+	float foam_overlay = clamp(foam_mask * foam_strength, 0.0, 1.0);
+    vec3 final_rgb = mix(base_color.rgb, vec3(1.0), foam_overlay);
+    // keep alpha strictly from water mask so areas outside remain transparent
+    float final_a = water_mask;
 
 	COLOR = vec4(final_rgb, final_a);
 }
