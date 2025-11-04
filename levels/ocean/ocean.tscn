@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://gcbxrkjmsvos"]
 
-[ext_resource type="Material" uid="uid://ddo1g7x44rq1h" path="res://shaders/water.tres" id="1_j25bp"]
+[ext_resource type="Material" uid="uid://fslq2ttnda5q" path="res://shaders/new_water.tres" id="1_j25bp"]
 [ext_resource type="Script" uid="uid://bw7bj23lrc64y" path="res://levels/ocean/RockSpawner.gd" id="2_d6hyc"]
 [ext_resource type="Texture2D" uid="uid://5wuawxt4su0l" path="res://assets/images/crab.png" id="3_3a8c6"]
 [ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="4_cwn0e"]
@@ -54,7 +54,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8311539, -7.191858, 6.13878
 size = Vector3(100, 1, 100)
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.418274, -5.5623827, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3048563, -5.5623827, 4.9068832)
 script = ExtResource("2_d6hyc")
 spawn_count = 150
 rock_scene_path = "uid://cdiug2preeho5"

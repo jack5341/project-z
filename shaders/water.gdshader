@@ -101,14 +101,14 @@ vec3 grad(float hash) {
     float type = mod(floor(hash / 8.0), 2.0);
     vec3 rhomb = (1.0 - type) * cube + type * (cuboct + cross(cube, cuboct));
 
-    // Expand it so that the new edges are the same length
-    // as the existing ones
-    vec3 grad = cuboct * vec3(1.22474487139) + rhomb;
+	// Expand it so that the new edges are the same length
+	// as the existing ones
+	vec3 grad = cuboct * vec3(1.22474487139) + rhomb;
 
-    // To make all gradients the same length, we only need to shorten the
-    // second type of vector. We also put in the whole noise scale constant.
-    // The compiler should reduce it into the existing floats. I think.
-    grad *= (-0.042942436724648037 * type + 1.0) * 3.5946317686139184;
+	// To make all gradients the same length, we only need to shorten the
+	// second type of vector. We also put in the whole noise scale constant.
+	// The compiler should reduce it into the existing floats. I think.
+	grad *= (-0.042942436724648037 * type + 1.0) * 3.5946317686139184;
 
     return grad;
 }
@@ -197,9 +197,9 @@ void vertex() {
 	#ifdef DISPLACEMENT
 	float time = TIME * displacement_scroll_speed * (wind_intensity * 0.7 + 0.3);
 	float displace1 = texture(displacement_texture, global_position.xz * displacement_scale + time * -wind_direction.xz).r;
-	float displace2 = texture(displacement_texture, global_position.xz * displacement_scale * displacement_scale_offset + time * (-wind_direction.xz + displacement_scroll_offset)).r;
+	float displace2 = texture(displacement_texture, global_position.xz * (displacement_scale * displacement_scale_offset) + time * (-wind_direction.xz + displacement_scroll_offset)).r;
 	float displacement_mixed = mix(displace1, displace2, 0.4);
-	float offset = (displacement_mixed * 2.0 + -1.0) * displacement_strength;
+	float offset = (displacement_mixed * 2.0 - 1.0) * displacement_strength;
 	VERTEX.y += offset;
 	global_position.y += offset;
 	#endif
@@ -216,7 +216,7 @@ void fragment() {
 
 	float time_factor = TIME * scroll_speed * wind_intens_factor;
 	vec3 n1 = textureLod(normal_map, global_position.xz * normal_map_scale + time_factor * -normalized_wind_direction.xz, 2.0).xyz;
-	vec3 n2 = textureLod(normal_map, global_position.xz * normal_map_scale * scale_offset + time_factor * 0.8 * (-normalized_wind_direction.xz + scroll_offset), 2.0).xyz;
+	vec3 n2 = textureLod(normal_map, global_position.xz * (normal_map_scale * scale_offset) + time_factor * 0.8 * (-normalized_wind_direction.xz + scroll_offset), 2.0).xyz;
 	NORMAL_MAP = mix(n1, n2, 0.5);
 	NORMAL_MAP_DEPTH = normal_map_strength;
 
@@ -232,7 +232,7 @@ void fragment() {
 	// Create Edge caused by other Objects
 	float edge_blend = clamp(relative_depth / -edge_thickness + 1.0, 0.0, 1.0);
 	vec2 edge_noise_uv = global_position.xz * edge_noise_scale * (normalized_wind_direction.xz * vec2(0.5) + vec2(0.5));
-	edge_noise_uv = -normalized_wind_direction.xz * TIME * edge_speed * vec2(wind_intens_factor) + edge_noise_uv;
+	edge_noise_uv = (-normalized_wind_direction.xz * TIME * edge_speed) * vec2(wind_intens_factor) + edge_noise_uv;
 	float edge_noise_sample = texture(edge_noise, edge_noise_uv).r;
 	float edge_mask = normalize( texture(edge_ramp, vec2(edge_noise_sample * (edge_blend * -1. + 1.))).r);
 
