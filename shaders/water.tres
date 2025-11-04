@@ -1,12 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://ddo1g7x44rq1h"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://ddo1g7x44rq1h"]
 
 [ext_resource type="Shader" uid="uid://cuyvx8fleh8id" path="res://shaders/water.gdshader" id="1_243dc"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_phhhr"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5w6nj"]
-noise = SubResource("FastNoiseLite_phhhr")
-seamless = true
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_243dc"]
 
@@ -25,33 +19,14 @@ as_normal_map = true
 render_priority = 0
 shader = ExtResource("1_243dc")
 shader_parameter/absorption_color = Color(1, 0.35, 0, 1)
-shader_parameter/fresnel_radius = 2.0
-shader_parameter/fresnel_color = Color(0, 0.57, 0.72, 1)
 shader_parameter/roughness = 0.15
 shader_parameter/specular = 0.25
 shader_parameter/depth_distance = 25.0
 shader_parameter/beers_law = 4.5
-shader_parameter/displacement_strength = 0.3
-shader_parameter/displacement_scroll_speed = 0.00800000038
-shader_parameter/displacement_scroll_offset = Vector2(-0.2, 0.3)
-shader_parameter/displacement_scale_offset = 0.5
-shader_parameter/displacement_scale = Vector2(0.04, 0.04)
-shader_parameter/displacement_texture = SubResource("NoiseTexture2D_5w6nj")
 shader_parameter/edge_thickness = 0.3
 shader_parameter/edge_speed = 0.35
 shader_parameter/edge_noise_scale = Vector2(0.4, 0.4)
 shader_parameter/edge_noise = SubResource("NoiseTexture2D_phhhr")
-shader_parameter/influence_size = 1.0
-shader_parameter/player_wave_frequenzy = 10.0
-shader_parameter/player_wave_speed = 5.0
-shader_parameter/caustic_size = 2.0
-shader_parameter/caustic_range = 40.0
-shader_parameter/caustic_strength = 0.18999999575312
-shader_parameter/ssr_mix_strength = 0.65
-shader_parameter/ssr_travel = 100.0
-shader_parameter/ssr_resolution_near = 1.0
-shader_parameter/ssr_resolution_far = 5.0
-shader_parameter/ssr_tolerance = 1.0
 shader_parameter/refraction_strength = 1.25
 shader_parameter/normal_map_strength = 1.0
 shader_parameter/scroll_speed = 0.00999999977648

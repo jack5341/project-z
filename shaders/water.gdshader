@@ -179,9 +179,11 @@ vec2 get_uv_from_view_position(vec3 position_view_space, mat4 proj_m)
 
 vec3 get_view_position_from_uv(vec2 uv, float depth, mat4 inv_proj_m)
 {
-	vec4 position_ndc = vec4((uv * 2.0) - 1.0, depth, 1.0);
-	vec4 view_position = inv_proj_m * position_ndc;
-	return view_position.xyz /= view_position.w;
+    // Compatibility (GL) expects NDC.z in [-1, 1]
+    float ndc_z = depth * 2.0 - 1.0;
+    vec4 position_ndc = vec4((uv * 2.0) - 1.0, ndc_z, 1.0);
+    vec4 view_position = inv_proj_m * position_ndc;
+    return view_position.xyz /= view_position.w;
 }
 #endif
 
@@ -215,14 +217,16 @@ void fragment() {
 	#endif
 
 	float time_factor = TIME * scroll_speed * wind_intens_factor;
-	vec3 n1 = textureLod(normal_map, global_position.xz * normal_map_scale + time_factor * -normalized_wind_direction.xz, 2.0).xyz;
-	vec3 n2 = textureLod(normal_map, global_position.xz * (normal_map_scale * scale_offset) + time_factor * 0.8 * (-normalized_wind_direction.xz + scroll_offset), 2.0).xyz;
+    vec3 n1 = texture(normal_map, global_position.xz * normal_map_scale + time_factor * -normalized_wind_direction.xz).xyz;
+    vec3 n2 = texture(normal_map, global_position.xz * (normal_map_scale * scale_offset) + time_factor * 0.8 * (-normalized_wind_direction.xz + scroll_offset)).xyz;
 	NORMAL_MAP = mix(n1, n2, 0.5);
 	NORMAL_MAP_DEPTH = normal_map_strength;
 
-	float depth_tex = texture(depth_texture, SCREEN_UV).r;
+    float depth_tex = texture(depth_texture, SCREEN_UV).r;
 
-	vec3 ndc = vec3(SCREEN_UV * vec2(2.0) + vec2(-1.0), depth_tex);
+    // Convert depth to NDC.z for Compatibility (GL): [0,1] -> [-1,1]
+    float ndc_z = depth_tex * 2.0 - 1.0;
+    vec3 ndc = vec3(SCREEN_UV * vec2(2.0) + vec2(-1.0), ndc_z);
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	world.y /= world.w;
 	float vertey_y = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).y;
@@ -234,7 +238,7 @@ void fragment() {
 	vec2 edge_noise_uv = global_position.xz * edge_noise_scale * (normalized_wind_direction.xz * vec2(0.5) + vec2(0.5));
 	edge_noise_uv = (-normalized_wind_direction.xz * TIME * edge_speed) * vec2(wind_intens_factor) + edge_noise_uv;
 	float edge_noise_sample = texture(edge_noise, edge_noise_uv).r;
-	float edge_mask = normalize( texture(edge_ramp, vec2(edge_noise_sample * (edge_blend * -1. + 1.))).r);
+    float edge_mask = clamp(texture(edge_ramp, vec2(edge_noise_sample * (edge_blend * -1. + 1.))).r, 0.0, 1.0);
 
 	// Create Ripples caused by player
 	float player_effect_mask = 0.0;
@@ -244,24 +248,26 @@ void fragment() {
 	float player_position_factor = smoothstep(influence_size, 0.0, length(player_relative.xz));
 	float player_waves = pow( sin(player_position_factor * player_wave_frequenzy + TIME * player_wave_speed) * 0.5 + 0.5, 6.0);
 	float wave_distort = texture( edge_ramp, vec2( player_waves * (edge_noise_sample + 0.2) * player_position_factor * player_height)).x;
-	player_effect_mask = clamp(normalize( wave_distort * -1.0 + 0.4), 0.0, 1.0);
+    player_effect_mask = clamp(wave_distort * -1.0 + 0.4, 0.0, 1.0);
 	#endif
 
 	// combine Edge Mask with Player Ripples
 	float ripple_mask = clamp( edge_mask * edge_blend + player_effect_mask, 0.0, 1.0);
 
-	// Calculate Fragment Depth
-	vec4 clip_pos = PROJECTION_MATRIX * vec4(VERTEX, 1.0);
-	clip_pos.xyz /= clip_pos.w;
-	DEPTH = clip_pos.z;
-	// Refract UV
+    // Calculate fragment NDC depth (0..1) without writing to DEPTH
+    vec4 clip_pos = PROJECTION_MATRIX * vec4(VERTEX, 1.0);
+    clip_pos.xyz /= clip_pos.w;
+    float frag_ndc_depth = clip_pos.z;
+
+    // Refract UV
 	vec2 refracted_uv = SCREEN_UV;
-	refract_uv(refracted_uv, NORMAL_MAP, sqrt(DEPTH) * relative_depth);
+    refract_uv(refracted_uv, NORMAL_MAP, sqrt(clamp(frag_ndc_depth, 0.0, 1.0)) * relative_depth);
 
 	vec3 screen;
 	float depth_blend;
-	float refracted_depth_tex = texture(depth_texture, refracted_uv).x;
-	ndc = vec3(refracted_uv * vec2(2.0) + vec2(-1.0), refracted_depth_tex);
+    float refracted_depth_tex = texture(depth_texture, refracted_uv).x;
+    float refr_ndc_z = refracted_depth_tex * 2.0 - 1.0;
+    ndc = vec3(refracted_uv * vec2(2.0) + vec2(-1.0), refr_ndc_z);
 	world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	world.xyz /= world.w;
 	float depth_test = vertey_y - world.y;
@@ -285,8 +291,8 @@ void fragment() {
 	Switching back to the unrefracted SCREEN_UV fixes that.
 	*/
 
-	if (depth_test > -0.0001 && in_bounds(refracted_uv)) {
-		screen = texture(screen_texture, refracted_uv).rgb * 0.9;
+    if (depth_test > -0.0001 && in_bounds(refracted_uv)) {
+        screen = texture(screen_texture, refracted_uv).rgb * 0.9;
 		depth_blend = clamp(depth_test / depth_distance, 0.0, 1.0);
 		depth_blend = exp(-depth_blend * beers_law) * -1.0 + 1.0;
 	} else {
@@ -294,6 +300,11 @@ void fragment() {
 		depth_blend = clamp(relative_depth / depth_distance, 0.0, 1.0);
 		depth_blend = exp(-depth_blend * beers_law) * -1.0 + 1.0;
 	}
+
+    // Robust fallback: if screen sample is near-black, use unrefracted sample
+    if (dot(screen, vec3(0.3333333)) < 0.001) {
+        screen = texture(screen_texture, SCREEN_UV).rgb * 0.9;
+    }
 
 	#ifdef SSR
 	vec3 view_normal_map = mat3(VIEW_MATRIX) * (vec3(NORMAL_MAP.x, 0.0, NORMAL_MAP.y) * 2.0 - 1.0);
@@ -314,7 +325,7 @@ void fragment() {
 		current_depth = get_view_position_from_uv(current_screen_pos, texture(depth_texture, current_screen_pos).x, INV_PROJECTION_MATRIX).z - current_view_pos.z;
 
 		if (current_depth > -0.0001 && current_depth <= ssr_tolerance * current_stepD) {
-			sampled_color = textureLod(screen_texture, current_screen_pos, 0.5).rgb;
+            sampled_color = texture(screen_texture, current_screen_pos).rgb;
 			vec2 ruv = 1.0 - abs(current_screen_pos * 2.0 - 1.0);
 			ruv = pow(ruv, vec2(0.5));
 			alpha_hit = clamp(min(ruv.x, ruv.y), 0.0, 1.0);
@@ -336,7 +347,7 @@ void fragment() {
 	color = mix(color, sampled_color, alpha_hit * (1.0 - roughness) * ssr_mix_strength);
 	#endif
 	color = mix(color, vec3(0.98), ripple_mask); // Apply Ripples
-	ALBEDO = color;
+    ALBEDO = clamp(color, vec3(0.0), vec3(1.0));
 	ROUGHNESS = roughness;
 	SPECULAR = specular;
 }

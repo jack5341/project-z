@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://gcbxrkjmsvos"]
+[gd_scene load_steps=14 format=3 uid="uid://gcbxrkjmsvos"]
 
-[ext_resource type="Material" uid="uid://fslq2ttnda5q" path="res://shaders/new_water.tres" id="1_j25bp"]
+[ext_resource type="Material" uid="uid://ddo1g7x44rq1h" path="res://shaders/water.tres" id="1_j25bp"]
 [ext_resource type="Script" uid="uid://bw7bj23lrc64y" path="res://levels/ocean/RockSpawner.gd" id="2_d6hyc"]
 [ext_resource type="Texture2D" uid="uid://5wuawxt4su0l" path="res://assets/images/crab.png" id="3_3a8c6"]
 [ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="4_cwn0e"]
@@ -23,6 +23,9 @@ glow_enabled = true
 [sub_resource type="PlaneMesh" id="PlaneMesh_i5arm"]
 size = Vector2(100, 100)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j25bp"]
+albedo_color = Color(0.1336976, 0.21011075, 0.14982727, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4arys"]
 albedo_texture = ExtResource("5_rm0u8")
 
@@ -36,53 +39,52 @@ uv1_triplanar = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0.11991882, 0, 0)
+light_energy = 0.25
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_jsk3o")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18122196, 0.116822004, 0.023618221)
+[node name="water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6195526, 0.6820152, 3.7084823)
 material_override = ExtResource("1_j25bp")
 mesh = SubResource("PlaneMesh_i5arm")
 
 [node name="Floor" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3793626, 0)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="Floor"]
+[node name="BottomFloor" type="CSGBox3D" parent="Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8311539, -7.191858, 6.1387844)
+material_override = SubResource("StandardMaterial3D_j25bp")
 size = Vector3(100, 1, 100)
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="Floor"]
+[node name="Rocks" type="MultiMeshInstance3D" parent="Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3048563, -5.5623827, 4.9068832)
 script = ExtResource("2_d6hyc")
-spawn_count = 150
 rock_scene_path = "uid://cdiug2preeho5"
 spawn_on_ready = true
 
-[node name="Gemi" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.58804, 0, 0)
+[node name="Ship" type="Node3D" parent="."]
 
-[node name="Sprite3D2" type="Sprite3D" parent="Gemi"]
-transform = Transform3D(0.2, 0, 0, 0, 0.14142136, -0.14142136, 0, 0.14142136, 0.14142136, -92.42375, 0.36013246, -5.096032)
+[node name="Sprite3D2" type="Sprite3D" parent="Ship"]
+transform = Transform3D(0.2, 0, 0, 0, 0.14142136, -0.14142136, 0, 0.14142136, 0.14142136, 2.1642914, 0.7069247, -5.096032)
 texture = ExtResource("3_3a8c6")
 
-[node name="Sprite3D" type="Sprite3D" parent="Gemi"]
-transform = Transform3D(0.2, 0, 0, 0, 0.13222899, -0.14142136, 0, 0.13222899, 0.14142136, -94.32792, 0.8802042, 0.51752406)
+[node name="Sprite3D" type="Sprite3D" parent="Ship"]
+transform = Transform3D(0.2, 0, 0, 0, 0.13222899, -0.14142136, 0, 0.13222899, 0.14142136, 0.2601242, 1.2269964, 0.51752406)
 texture = ExtResource("4_cwn0e")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Gemi"]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -94.398735, 4.7683716e-07, 0.001064258)
+[node name="CSGBox3D" type="CSGBox3D" parent="Ship"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.18930817, 0.3467927, 0.001064258)
 material_override = SubResource("StandardMaterial3D_4arys")
 size = Vector3(10, 1, 8)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Gemi"]
-transform = Transform3D(0.13269077, 0, 0.06995104, 0, 0.14999999, 0, -0.06995104, 0, 0.13269077, -96.74835, 0.5365352, -2.0398111)
+[node name="CSGBox3D2" type="CSGBox3D" parent="Ship"]
+transform = Transform3D(0.13269077, 0, 0.06995104, 0, 0.14999999, 0, -0.06995104, 0, 0.13269077, -2.1603088, 0.8833274, -2.0398111)
 material_override = SubResource("StandardMaterial3D_6iypd")
 size = Vector3(5.609497, 0.41455078, 2.0751953)
 
-[node name="Camera3D" type="Camera3D" parent="Gemi"]
-transform = Transform3D(-1, 6.696973e-08, -5.619428e-08, 0, 0.64278764, 0.76604444, 8.742278e-08, 0.76604444, -0.64278764, -93.50372, 8.385043, -8.244361)
-visible = false
+[node name="Camera3D" type="Camera3D" parent="Ship"]
+transform = Transform3D(-1, 6.696973e-08, -5.619428e-08, 0, 0.64278764, 0.76604444, 8.742278e-08, 0.76604444, -0.64278764, 1.0843201, 8.731835, -8.244361)
 fov = 55.0
 size = 2.0
