@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://bepm5g1iijcre"]
+
+[ext_resource type="Script" path="res://characters/player/player.gd" id="1_xxgcw"]
+[ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="2_xxgcw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_508ok"]
+size = Vector3(1.9204102, 2.8329144, 2.8519697)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xxgcw"]
+viewport_path = NodePath("CanvasLayer/SubViewport")
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_xxgcw")
+dash_cooldown = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01629448, 0.0032548904, -0.013339043)
+shape = SubResource("BoxShape3D_508ok")
+
+[node name="RotationOffset" type="Marker3D" parent="."]
+
+[node name="Model" type="Sprite3D" parent="RotationOffset"]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+pixel_size = 0.005
+billboard = 1
+no_depth_test = true
+alpha_cut = 2
+texture = ExtResource("2_xxgcw")
+
+[node name="Camera3D" type="Camera3D" parent="RotationOffset/Model"]
+transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0, 16.000002)
+size = 14.0
+
+[node name="Healthbar" type="Sprite3D" parent="RotationOffset/Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4142137, 1.4142137)
+billboard = 1
+no_depth_test = true
+alpha_cut = 2
+texture = SubResource("ViewportTexture_xxgcw")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer"]
+transparent_bg = true
+size = Vector2i(100, 100)
+
+[node name="Healthbar" type="Control" parent="CanvasLayer/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/SubViewport/Healthbar"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -13.5
+offset_right = 50.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
