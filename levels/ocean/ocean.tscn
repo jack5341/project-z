@@ -1,0 +1,96 @@
+[gd_scene load_steps=15 format=3 uid="uid://gcbxrkjmsvos"]
+
+[ext_resource type="Material" uid="uid://ddo1g7x44rq1h" path="res://shaders/water.tres" id="1_j25bp"]
+[ext_resource type="Script" uid="uid://bw7bj23lrc64y" path="res://utils/rock/rockspawner.gd" id="2_d6hyc"]
+[ext_resource type="Texture2D" uid="uid://5wuawxt4su0l" path="res://assets/images/crab.png" id="3_3a8c6"]
+[ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="4_cwn0e"]
+[ext_resource type="Script" uid="uid://c08fouanews6e" path="res://utils/wave/wave.gd" id="4_wm15w"]
+[ext_resource type="Texture2D" uid="uid://dld6b8lroljrt" path="res://assets/images/floor.png" id="5_rm0u8"]
+[ext_resource type="Texture2D" uid="uid://3avuwjhp51av" path="res://assets/images/planks.png" id="6_h0sva"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i5arm"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_wc5p8"]
+sky_material = SubResource("ProceduralSkyMaterial_i5arm")
+
+[sub_resource type="Environment" id="Environment_jsk3o"]
+background_mode = 2
+sky = SubResource("Sky_wc5p8")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_i5arm"]
+size = Vector2(500, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j25bp"]
+albedo_color = Color(0.1336976, 0.21011075, 0.14982727, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4arys"]
+albedo_texture = ExtResource("5_rm0u8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6iypd"]
+albedo_texture = ExtResource("6_h0sva")
+uv1_scale = Vector3(0.435, 0.435, 0.435)
+uv1_offset = Vector3(0.635, 0, 0)
+uv1_triplanar = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0.11991882, 0, 0)
+light_energy = 0.25
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jsk3o")
+
+[node name="water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7040133, 0)
+material_override = ExtResource("1_j25bp")
+mesh = SubResource("PlaneMesh_i5arm")
+
+[node name="Floor" type="Node3D" parent="."]
+
+[node name="BottomFloor" type="CSGBox3D" parent="Floor"]
+material_override = SubResource("StandardMaterial3D_j25bp")
+size = Vector3(500, 1, 500)
+
+[node name="Rocks" type="MultiMeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0640783, 0)
+script = ExtResource("2_d6hyc")
+spawn_count = 3000
+area_size = Vector2(500, 500)
+rock_scene_path = "uid://cdiug2preeho5"
+spawn_on_ready = true
+
+[node name="Ship" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1366892, 0)
+
+[node name="Sprite3D2" type="Sprite3D" parent="Ship"]
+transform = Transform3D(0.2, 0, 0, 0, 0.14142136, -0.14142136, 0, 0.14142136, 0.14142136, 2.1642914, 0.7069247, -5.096032)
+texture = ExtResource("3_3a8c6")
+
+[node name="Sprite3D" type="Sprite3D" parent="Ship"]
+transform = Transform3D(0.2, 0, 0, 0, 0.13222899, -0.14142136, 0, 0.13222899, 0.14142136, 0.2601242, 1.2269964, 0.51752406)
+texture = ExtResource("4_cwn0e")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Ship"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.18930817, 0.3467927, 0.001064258)
+material_override = SubResource("StandardMaterial3D_4arys")
+size = Vector3(10, 1, 8)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Ship"]
+transform = Transform3D(0.13269077, 0, 0.06995104, 0, 0.14999999, 0, -0.06995104, 0, 0.13269077, -2.1603088, 0.8833274, -2.0398111)
+material_override = SubResource("StandardMaterial3D_6iypd")
+size = Vector3(5.609497, 0.41455078, 2.0751953)
+
+[node name="Camera3D" type="Camera3D" parent="Ship"]
+transform = Transform3D(-1, 6.696973e-08, -5.619428e-08, 0, 0.64278764, 0.76604444, 8.742278e-08, 0.76604444, -0.64278764, 1.0843201, 8.731835, -8.244361)
+fov = 55.0
+size = 2.0
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("4_wm15w")
+metadata/_custom_type_script = "uid://c08fouanews6e"

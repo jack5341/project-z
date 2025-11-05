@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqwumektsclmn"]
+
+[ext_resource type="Texture2D" uid="uid://c3xrx7eauf5ll" path="res://models/fence/fence.png" id="1_6r53x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6r53x"]
+transparency = 4
+albedo_texture = ExtResource("1_6r53x")
+uv1_scale = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kopsw"]
+material = SubResource("StandardMaterial3D_6r53x")
+size = Vector3(10, 1, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6r53x"]
+points = PackedVector3Array(5, 0.5, 0.5, 5, 0.5, -0.5, -5, 0.5, 0.5, 5, -0.5, 0.5, 5, -0.5, -0.5, -5, 0.5, -0.5, -5, -0.5, 0.5, -5, -0.5, -0.5)
+
+[node name="Fence" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.20764351, 0, 0, 0, -1.0881418e-08, -1, 0, 0.24893785, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("BoxMesh_kopsw")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_6r53x")

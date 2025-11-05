@@ -1,0 +1,30 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://wvol5rkglbem"]
+
+[ext_resource type="Shader" uid="uid://c476ea1cdq360" path="res://shaders/ui_water_level.gdshader" id="1_rf2kx"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rf2kx"]
+noise_type = 2
+frequency = 0.0003
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tbai7"]
+noise = SubResource("FastNoiseLite_rf2kx")
+
+[resource]
+shader = ExtResource("1_rf2kx")
+shader_parameter/level = 0.922000043795
+shader_parameter/shallow_color = Color(0.101960786, 0.9490196, 0.9607843, 1)
+shader_parameter/deep_color = Color(0.011764706, 0.1882353, 0.69803923, 1)
+shader_parameter/wave_amp = 0.035
+shader_parameter/wave_freq = 0.33
+shader_parameter/wave_speed = 0.9
+shader_parameter/simple_wave = true
+shader_parameter/wave_noise_tex = SubResource("NoiseTexture2D_tbai7")
+shader_parameter/use_wave_noise_texture = true
+shader_parameter/wave_noise_scale = 1.0
+shader_parameter/wave_noise_amp = 0.6
+shader_parameter/foam_width = 0.028
+shader_parameter/foam_strength = 6.125
+shader_parameter/foam_noise_scale = 2.675
+shader_parameter/foam_noise_amp = 0.325
+shader_parameter/foam_noise_tex = SubResource("NoiseTexture2D_tbai7")
+shader_parameter/use_noise_texture = false

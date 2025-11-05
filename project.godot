@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="project-z"
-run/main_scene="uid://c6g16nkpfuf7a"
+run/main_scene="uid://gcbxrkjmsvos"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -71,3 +71,18 @@ player_attack={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[shader_globals]
+
+wind_intensity={
+"type": "float",
+"value": 0.3
+}
+wind_direction={
+"type": "vec3",
+"value": Vector3(0.185, 0.265, 0.14)
+}
+player_position={
+"type": "vec3",
+"value": Vector3(-94.328, 0.88, 0.5)
+}

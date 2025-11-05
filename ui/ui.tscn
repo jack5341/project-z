@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://ftvjwcrrvkj5"]
+
+[ext_resource type="Material" uid="uid://wvol5rkglbem" path="res://shaders/ui_water_level.tres" id="1_nb4k0"]
+[ext_resource type="Texture2D" uid="uid://3rltu88n2eb1" path="res://assets/images/water_level_bar.png" id="2_ks8t7"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = ExtResource("1_nb4k0")
+layout_mode = 0
+offset_right = 19.0
+offset_bottom = 81.0
+
+[node name="WaterLevelBar" type="Sprite2D" parent="."]
+position = Vector2(44.999996, 49)
+scale = Vector2(0.1492891, 0.14928913)
+texture = ExtResource("2_ks8t7")

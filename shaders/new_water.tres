@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://fslq2ttnda5q"]
+
+[ext_resource type="Shader" uid="uid://b7x1b48ask2pt" path="res://shaders/new_water.gdshader" id="1_mgqbf"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3uq3s"]
+noise_type = 2
+frequency = 0.0067
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fihk1"]
+noise = SubResource("FastNoiseLite_3uq3s")
+seamless = true
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_mgqbf")
+shader_parameter/water_color = Color(0.1, 0.3, 0.5, 1)
+shader_parameter/foam_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_fihk1")
+shader_parameter/wave_scale = 5.0
+shader_parameter/wave_speed = 0.05400000256499999
+shader_parameter/foam_threshold = 0.6570000312075
+shader_parameter/foam_softness = 0.1630000077425
+shader_parameter/metallic = 0.0
+shader_parameter/specular = 0.8
+shader_parameter/roughness = 0.05
