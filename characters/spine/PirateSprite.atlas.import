@@ -1,0 +1,16 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://dpfh0i471t8cx"
+path="res://.godot/imported/PirateSprite.atlas-fcaca3f90e2074b335320ab300739bc4.spatlas"
+
+[deps]
+
+source_file="res://characters/spine/PirateSprite.atlas"
+dest_files=["res://.godot/imported/PirateSprite.atlas-fcaca3f90e2074b335320ab300739bc4.spatlas"]
+
+[params]
+
+normal_map_prefix="n"
+specular_map_prefix="s"

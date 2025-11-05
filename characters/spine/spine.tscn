@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://df3sbp0q8sqj3"]
+
+[ext_resource type="PackedScene" uid="uid://vkdpsfxes55m" path="res://characters/spine/node_2d.tscn" id="1_jnwho"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_x6gpb"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Node3d" type="Node3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+texture = SubResource("ViewportTexture_x6gpb")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1192, 777)
+
+[node name="Node2D" parent="SubViewport" instance=ExtResource("1_jnwho")]

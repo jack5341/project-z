@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dn0vni80x0405"]
+[gd_scene load_steps=10 format=3 uid="uid://dn0vni80x0405"]
 
 [ext_resource type="Script" uid="uid://djjlls6v0a3tt" path="res://characters/player/player.gd" id="1_xxgcw"]
 [ext_resource type="PackedScene" uid="uid://dsi3kjg0rfxxo" path="res://characters/player/player_slash.tscn" id="2_5dc8e"]
 [ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="2_xxgcw"]
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="3_exd8k"]
+[ext_resource type="PackedScene" uid="uid://df3sbp0q8sqj3" path="res://characters/spine/spine.tscn" id="4_c6leb"]
 [ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="5_ixbpm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_508ok"]
@@ -29,21 +30,25 @@ shape = SubResource("BoxShape3D_508ok")
 
 [node name="RotationOffset" type="Marker3D" parent="."]
 
-[node name="Model" type="Sprite3D" parent="RotationOffset"]
+[node name="Model2" type="Sprite3D" parent="RotationOffset"]
 transform = Transform3D(1, 0, 0, 0, 0.819152, 0.5735764, 0, -0.5735764, 0.819152, 0, 0, 0)
+visible = false
 pixel_size = 0.005
 billboard = 1
 no_depth_test = true
 alpha_cut = 2
 texture = ExtResource("2_xxgcw")
 
+[node name="Model" parent="RotationOffset" instance=ExtResource("4_c6leb")]
+transform = Transform3D(0.455, 0, 0, 0, 0.455, 0, 0, 0, 0.455, 0, 0, 0)
+
 [node name="Camera3D" type="Camera3D" parent="RotationOffset/Model"]
-transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0, 16.000002)
+transform = Transform3D(2.197802, 0, 0, 0, 1.8003342, 1.2606075, 0, -1.2606075, 1.8003342, 0, 20.16972, 28.805347)
 fov = 50.0
 size = 14.0
 
 [node name="Healthbar" type="Sprite3D" parent="RotationOffset/Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4142137, 1.4142137)
+transform = Transform3D(2.197802, 0, 0, 0, 1.800334, 1.2606074, 0, -1.2606074, 1.800334, 0, 4.328825, 0.7632888)
 billboard = 1
 no_depth_test = true
 alpha_cut = 2

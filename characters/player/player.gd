@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@onready var model: Sprite3D = $RotationOffset/Model
+@onready var model: Sprite3D = $RotationOffset/Model/Sprite3D
 @onready var camera: Camera3D = $RotationOffset/Camera3D
 @onready var attackable_body: AttackableBody = $AttackableBody
 

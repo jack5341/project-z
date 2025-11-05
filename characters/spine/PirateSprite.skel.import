@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://dppum2fb2dnch"
+path="res://.godot/imported/PirateSprite.skel-716bc31105953910221afd16fdefbc4b.spskel"
+
+[deps]
+
+source_file="res://characters/spine/PirateSprite.skel"
+dest_files=["res://.godot/imported/PirateSprite.skel-716bc31105953910221afd16fdefbc4b.spskel"]
+
+[params]
+
