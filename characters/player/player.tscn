@@ -16,7 +16,7 @@ viewport_path = NodePath("AttackableBodyHealthbar")
 radius = 0.82373047
 height = 2.9016113
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["players"]]
 collision_layer = 2
 script = ExtResource("1_xxgcw")
 dash_cooldown = 0.5

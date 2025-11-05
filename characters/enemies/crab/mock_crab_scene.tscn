@@ -1,7 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://x62cw4vdrs20"]
+[gd_scene load_steps=18 format=3 uid="uid://x62cw4vdrs20"]
 
 [ext_resource type="PackedScene" uid="uid://bpekosltikvao" path="res://characters/enemies/crab/crab.tscn" id="1_o24i6"]
 [ext_resource type="PackedScene" uid="uid://dn0vni80x0405" path="res://characters/player/player.tscn" id="1_sk15x"]
+[ext_resource type="Script" uid="uid://b1apnxdiwlw6l" path="res://utils/enemy_waves/enemy_wave_handler.gd" id="3_sk15x"]
+[ext_resource type="Script" uid="uid://bowlenosrn8xc" path="res://utils/enemy_waves/enemy_wave_event.gd" id="4_tq3bg"]
+[ext_resource type="Script" uid="uid://ddpvgd2jdi17n" path="res://utils/enemy_waves/spawn_enemy_event.gd" id="5_njm2q"]
+[ext_resource type="Script" uid="uid://6ix82m43o37x" path="res://utils/enemy_waves/spawn_spawner_event.gd" id="6_mbuwf"]
+[ext_resource type="PackedScene" uid="uid://rmhxeutefyp3" path="res://characters/enemies/enemy_spawner.tscn" id="6_njm2q"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_28h25"]
 vertices = PackedVector3Array(-28.151657, 0.36164856, -15.358986, -16.651657, 0.36164856, -15.358986, -16.401657, 0.36164856, -17.608986, -12.151657, 0.36164856, -17.608986, -11.901657, 0.36164856, -47.358986, -28.151657, 0.36164856, -47.358986, -10.401657, 0.36164856, -17.358986, -10.401657, 0.36164856, -15.608986, 8.348343, 0.36164856, -15.608986, 8.348343, 0.36164856, -17.358986, 10.098343, 0.36164856, -17.608986, 9.848343, 0.36164856, -47.358986, 14.348343, 0.36164856, -17.608986, 14.598343, 0.36164856, -15.858986, 28.848343, 0.36164856, -16.108986, 28.848343, 0.36164856, -47.358986, -15.651657, 12.111649, -16.608986, -15.651657, 12.111649, -12.358986, -11.401657, 12.111649, -12.358986, -11.401657, 12.111649, -16.608986, 9.348343, 4.1116486, -16.608986, 9.348343, 4.1116486, -12.358986, 13.598343, 4.1116486, -12.358986, 13.598343, 4.1116486, -16.608986, -15.401657, 0.36164856, -16.358986, -15.401657, 0.36164856, -12.608986, -11.651657, 0.36164856, -12.608986, -11.651657, 0.36164856, -16.358986, 9.598343, 0.36164856, -16.358986, 9.598343, 0.36164856, -12.608986, 13.348343, 0.36164856, -12.608986, 13.348343, 0.36164856, -16.358986, 23.098343, 0.36164856, -6.108986, 23.348343, 0.36164856, -3.858986, 28.848343, 0.36164856, -3.858986, 14.598343, 0.36164856, -11.608986, 14.098343, 0.36164856, -11.358986, 17.598343, 0.36164856, -6.108986, 2.598343, 0.36164856, -3.108986, 8.348343, 0.36164856, -11.858986, -10.401657, 0.36164856, -11.858986, -2.651657, 0.36164856, -3.108986, -16.651657, 0.36164856, -11.608986, -15.151657, 0.36164856, 5.391014, -14.901657, 0.36164856, -11.358986, -28.151657, 0.36164856, 5.391014, 1.3483429, 0.36164856, 4.391014, 1.0983429, 0.36164856, 3.141014, -3.151657, 0.36164856, 2.891014, -10.401657, 0.36164856, 4.391014, -10.651657, 0.36164856, 5.391014, -3.151657, 0.36164856, -2.858986, -10.651657, 0.36164856, -11.358986, 3.098343, 0.36164856, 2.891014, 10.348343, 0.36164856, 4.391014, 18.598343, 0.36164856, 5.391014, 18.848343, 0.36164856, 0.1410141, 17.098343, 0.36164856, -0.1089859, 10.598343, 0.36164856, 5.391014, 17.098343, 0.36164856, -5.858986, 8.598343, 0.36164856, -11.358986, 3.098343, 0.36164856, -2.858986, 18.098343, 6.8616486, -5.108986, 18.098343, 6.8616486, -0.8589859, 22.348343, 6.8616486, -0.8589859, 22.348343, 6.8616486, -5.108986, 18.348343, 0.36164856, -4.858986, 18.348343, 0.36164856, -1.1089859, 22.098343, 0.36164856, -1.1089859, 22.098343, 0.36164856, -4.858986, 23.098343, 0.36164856, 0.1410141, 28.848343, 0.36164856, 5.391014, -2.151657, 7.8616486, -2.108986, -2.151657, 7.8616486, 2.141014, 2.098343, 7.8616486, 2.141014, 2.098343, 7.8616486, -2.108986, -1.9016571, 0.36164856, -1.8589859, -1.9016571, 0.36164856, 1.8910141, 1.8483429, 0.36164856, 1.8910141, 1.8483429, 0.36164856, -1.8589859, -9.651657, 1.3616486, 5.391014, -9.651657, 1.3616486, 5.891014, 9.598343, 1.3616486, 5.891014, 9.598343, 1.3616486, 5.391014)
@@ -25,6 +30,28 @@ size = Vector3(5, 15, 5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ju2js"]
 size = Vector3(5, 15, 5)
+
+[sub_resource type="Resource" id="Resource_s5ugp"]
+script = ExtResource("6_mbuwf")
+spawner_scene = ExtResource("6_njm2q")
+enemy_scene = ExtResource("1_o24i6")
+spawn_delay = 5.0
+max_enemies_spawned = 4
+event_time = 5.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Resource" id="Resource_mbuwf"]
+script = ExtResource("5_njm2q")
+enemy_scene = ExtResource("1_o24i6")
+spawn_position = Vector3(2.42, 0, 0)
+metadata/_custom_type_script = "uid://ddpvgd2jdi17n"
+
+[sub_resource type="Resource" id="Resource_k3m77"]
+script = ExtResource("5_njm2q")
+enemy_scene = ExtResource("1_o24i6")
+spawn_position = Vector3(-3.735, 0, 0)
+event_time = 0.5
+metadata/_custom_type_script = "uid://ddpvgd2jdi17n"
 
 [node name="MockCrabScene" type="Node3D"]
 
@@ -53,6 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1035156e-05, -7.349182, 0)
 shape = SubResource("BoxShape3D_mwe5d")
 
 [node name="ObstacleExample" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.8068304)
 mesh = SubResource("BoxMesh_sk15x")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ObstacleExample"]
@@ -90,17 +118,10 @@ shape = SubResource("BoxShape3D_ju2js")
 [node name="Player" parent="." instance=ExtResource("1_sk15x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.191393, 1.3523712, -1.134161)
 
-[node name="Crab" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.460443, -5.887216, 9.008687)
-target_node = NodePath("../Player")
-
-[node name="Crab2" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7918878, -7.9228406, 9.008687)
-target_node = NodePath("../Player")
-
-[node name="Crab3" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.238189, -2.1803517, 9.008687)
-target_node = NodePath("../Player")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.9555824, -0.11441409, -0.2716096, 0.2947242, 0.37096405, 0.88063806, 0, -0.9215721, 0.38820732, -12.477627, 14.78931, 12.409823)
+
+[node name="Wave1EventHandler" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.10834, 25.027397)
+script = ExtResource("3_sk15x")
+events = Array[ExtResource("4_tq3bg")]([SubResource("Resource_s5ugp"), SubResource("Resource_mbuwf"), SubResource("Resource_k3m77")])
