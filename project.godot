@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="project-z"
-run/main_scene="uid://c6g16nkpfuf7a"
+run/main_scene="uid://gcbxrkjmsvos"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 

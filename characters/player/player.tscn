@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dn0vni80x0405"]
 
-[ext_resource type="Script" path="res://characters/player/player.gd" id="1_xxgcw"]
+[ext_resource type="Script" uid="uid://djjlls6v0a3tt" path="res://characters/player/player.gd" id="1_xxgcw"]
 [ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="2_xxgcw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_508ok"]
@@ -20,7 +20,7 @@ shape = SubResource("BoxShape3D_508ok")
 [node name="RotationOffset" type="Marker3D" parent="."]
 
 [node name="Model" type="Sprite3D" parent="RotationOffset"]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.819152, 0.5735764, 0, -0.5735764, 0.819152, 0, 0, 0)
 pixel_size = 0.005
 billboard = 1
 no_depth_test = true
@@ -29,6 +29,7 @@ texture = ExtResource("2_xxgcw")
 
 [node name="Camera3D" type="Camera3D" parent="RotationOffset/Model"]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, 0, 0, 16.000002)
+fov = 50.0
 size = 14.0
 
 [node name="Healthbar" type="Sprite3D" parent="RotationOffset/Model"]

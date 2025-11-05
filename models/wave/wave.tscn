@@ -14,5 +14,6 @@ script = ExtResource("1_s0skp")
 shape = SubResource("1_cyl")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 alpha_cut = 2
 texture = ExtResource("1_hjkvu")
