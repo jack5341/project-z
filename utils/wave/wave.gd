@@ -10,6 +10,7 @@ class_name WaveManager extends Node
 @export var spawn_z_range: Vector2 = Vector2(-45.0, 45.0)
 @export var move_direction: Vector3 = Vector3(1, 0, 0)
 @export var despawn_x: float = 120.0
+@export var spawn_offset_x: float = 100.0	# Distance from player when spawning relative to player
 
 # Speed and damage ranges per size
 @export var small_speed_range: Vector2 = Vector2(6.0, 9.0)
@@ -25,6 +26,7 @@ class_name WaveManager extends Node
 var _rng := RandomNumberGenerator.new()
 var _spawned_total: int = 0
 var _timer: Timer
+var _player: Node3D
 
 const WaveScript := preload("res://models/wave/wave.gd")
 
@@ -36,6 +38,8 @@ func _ready():
 	_timer.one_shot = false
 	add_child(_timer)
 	_timer.timeout.connect(_on_spawn_timer_timeout)
+	# Try to locate the player once on ready
+	_player = _find_player()
 
 func _on_spawn_timer_timeout() -> void:
 	if wave_count > 0 and _spawned_total >= wave_count:
@@ -57,7 +61,22 @@ func _spawn_wave() -> void:
 		return
 	var wave: Node3D = wave_scene.instantiate()
 	var z := _rng.randf_range(spawn_z_range.x, spawn_z_range.y)
-	wave.global_position = Vector3(spawn_x_start, spawn_y, z)
+
+	# Ensure we have a player reference; attempt to find if missing
+	if _player == null:
+		_player = _find_player()
+
+	var spawn_pos_x := spawn_x_start
+	var direction_vec := move_direction
+	var despawn_boundary_x := despawn_x
+	if _player != null:
+		var player_x := _player.global_position.x
+		var from_left := _rng.randf() < 0.5
+		spawn_pos_x = player_x - spawn_offset_x if from_left else player_x + spawn_offset_x
+		direction_vec = Vector3(1, 0, 0) if from_left else Vector3(-1, 0, 0)
+		despawn_boundary_x = player_x + spawn_offset_x if from_left else player_x - spawn_offset_x
+
+	wave.global_position = Vector3(spawn_pos_x, spawn_y, z)
 	
 	# Randomize size
 	var size_index := _rng.randi_range(0, 2)
@@ -71,8 +90,8 @@ func _spawn_wave() -> void:
 	wave.set("wave_size", wave_size)
 	wave.set("speed", speed)
 	wave.set("damage", damage)
-	wave.set("direction", move_direction)
-	wave.set("despawn_x", despawn_x)
+	wave.set("direction", direction_vec)
+	wave.set("despawn_x", despawn_boundary_x)
 	
 	add_child(wave)
 	_spawned_total += 1
@@ -106,7 +125,11 @@ func _on_wave_finished() -> void:
 	# Placeholder for bookkeeping; active waves are counted dynamically
 	pass
 
-func _on_wave_hit(damage: int, body: Node) -> void:
-	# TODO: Integrate with ship health here
-	# print("Wave hit ", body.name, " for ", damage, " damage")
-	pass
+func _find_player() -> Node3D:
+	# Try to locate a node named "Player" anywhere in the active scene tree
+	var root := get_tree().get_current_scene()
+	if root != null:
+		var node := root.find_child("Player", true, false)
+		if node is Node3D:
+			return node
+	return null
