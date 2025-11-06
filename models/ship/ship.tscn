@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://xqygc3dedr2h"]
+[gd_scene load_steps=14 format=3 uid="uid://xqygc3dedr2h"]
 
 [ext_resource type="Texture2D" uid="uid://dld6b8lroljrt" path="res://assets/images/floor.png" id="1_1tolm"]
 [ext_resource type="PackedScene" uid="uid://blpn7bnyndyqh" path="res://models/fence/fence.tscn" id="2_bb37m"]
+[ext_resource type="Script" uid="uid://dtustnkv2so7i" path="res://models/ship/shippart.gd" id="2_vlt18"]
 [ext_resource type="Texture2D" uid="uid://b4i1l1snj71f5" path="res://assets/images/rear.png" id="3_rlhmo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bb37m"]
@@ -12,53 +13,129 @@ uv1_scale = Vector3(6, 6, 6)
 material = SubResource("StandardMaterial3D_bb37m")
 size = Vector3(10, 1, 15)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1tolm"]
-size = Vector3(5, 1, 5)
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_rlhmo"]
+points = PackedVector3Array(5, 0.5, 7.499999, 5, -0.5, 7.499999, 5, 0.5, -7.5, -5, 0.5, 7.499999, -5, -0.5, 7.499999, 5, -0.5, -7.5, -5, 0.5, -7.5, -5, -0.5, -7.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vlt18"]
+size = Vector3(5, 3.7, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oygni"]
-transparency = 4
+albedo_color = Color(0.11883695, 0.11780807, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_x6ult"]
+material = SubResource("StandardMaterial3D_oygni")
+size = Vector2(5, 5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vlt18"]
+material = SubResource("StandardMaterial3D_oygni")
+size = Vector2(5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rlhmo"]
 albedo_texture = ExtResource("3_rlhmo")
+uv1_scale = Vector3(2.94, 2.94, 2.94)
+uv1_offset = Vector3(2.045, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oygni"]
+material = SubResource("StandardMaterial3D_rlhmo")
+size = Vector3(10, 3, 1)
 
 [node name="Ship" type="Node3D"]
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_6knpu")
 
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_rlhmo")
+
 [node name="Part1" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -5)
+transform = Transform3D(1, 0, 0, 0, -4.1140003, 0, 0, 0, 1, -2.5, -0.4, -5)
+script = ExtResource("2_vlt18")
+body_group = "ship"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Part1"]
-shape = SubResource("BoxShape3D_1tolm")
+transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, 0, 0.14846388, 0)
+shape = SubResource("BoxShape3D_vlt18")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Part1"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, -0.21938157, 0)
+visible = false
+mesh = SubResource("PlaneMesh_x6ult")
 
 [node name="Part2" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -4.1140003, 0, 0, 0, 1, -2.5, -0.4, 0)
+script = ExtResource("2_vlt18")
+body_group = "ship"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Part2"]
-shape = SubResource("BoxShape3D_1tolm")
+transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, 0, 0.14846388, 0)
+shape = SubResource("BoxShape3D_vlt18")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Part2"]
+transform = Transform3D(0.9999999, 0, 0, 0, -0.9999999, -8.742276e-08, 0, 8.742277e-08, -0.9999999, 0, -0.21938145, -1.589457e-07)
+visible = false
+mesh = SubResource("PlaneMesh_x6ult")
+skeleton = NodePath("../../Part1")
 
 [node name="Part3" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 5)
+transform = Transform3D(1, 0, 0, 0, -4.1140003, 0, 0, 0, 1, -2.5, -0.4, 5)
+script = ExtResource("2_vlt18")
+body_group = "ship"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Part3"]
-shape = SubResource("BoxShape3D_1tolm")
+transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, 0, 0.14846388, 0)
+shape = SubResource("BoxShape3D_vlt18")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Part3"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, -0.21938133, 0)
+visible = false
+mesh = SubResource("PlaneMesh_vlt18")
+skeleton = NodePath("../../Part1")
 
 [node name="Part4" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -5)
+transform = Transform3D(1, 0, 0, 0, -4.1140003, 0, 0, 0, 1, 2.5, -0.4, -5)
+script = ExtResource("2_vlt18")
+body_group = "ship"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Part4"]
-shape = SubResource("BoxShape3D_1tolm")
+transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, 0, 0.14846388, 0)
+shape = SubResource("BoxShape3D_vlt18")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Part4"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, -0.21938157, 0)
+visible = false
+mesh = SubResource("PlaneMesh_x6ult")
 
 [node name="Part5" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -4.1140003, 0, 0, 0, 1, 2.5, -0.4, 0)
+script = ExtResource("2_vlt18")
+body_group = "ship"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Part5"]
-shape = SubResource("BoxShape3D_1tolm")
+transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, 0, 0.14846388, 0)
+shape = SubResource("BoxShape3D_vlt18")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Part5"]
+transform = Transform3D(0.9999999, 0, 0, 0, -0.9999999, -8.742276e-08, 0, 8.742277e-08, -0.9999999, 0, -0.21938145, -1.589457e-07)
+visible = false
+mesh = SubResource("PlaneMesh_x6ult")
+skeleton = NodePath("../../Part1")
 
 [node name="Part6" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 5)
+transform = Transform3D(1, 0, 0, 0, -4.1140003, 0, 0, 0, 1, 2.5, -0.4, 5)
+script = ExtResource("2_vlt18")
+body_group = "ship"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Part6"]
-shape = SubResource("BoxShape3D_1tolm")
+transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, 0, 0.14846388, 0)
+shape = SubResource("BoxShape3D_vlt18")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Part6"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, -0.21938133, 0)
+visible = false
+mesh = SubResource("PlaneMesh_vlt18")
+skeleton = NodePath("../../Part1")
 
 [node name="Decorations" type="Node3D" parent="."]
 
@@ -212,12 +289,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.90069, 0.999182, -6)
 [node name="Fence30" parent="Decorations" instance=ExtResource("2_bb37m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.90069, 0.999182, -7)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, -1.95, -7)
-size = Vector3(10, 2.9, 1)
-material = SubResource("StandardMaterial3D_oygni")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0251632, -7.011242)
+mesh = SubResource("BoxMesh_oygni")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0, -1.95, 7)
-size = Vector3(10, 2.9, 1)
-material = SubResource("StandardMaterial3D_oygni")
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0251632, 7.0110626)
+mesh = SubResource("BoxMesh_oygni")
+
+[connection signal="on_break" from="Part1" to="Part1" method="_on_on_break"]
+[connection signal="on_break" from="Part2" to="Part2" method="_on_on_break"]
+[connection signal="on_break" from="Part3" to="Part3" method="_on_on_break"]
+[connection signal="on_break" from="Part4" to="Part4" method="_on_on_break"]
+[connection signal="on_break" from="Part5" to="Part5" method="_on_on_break"]
+[connection signal="on_break" from="Part6" to="Part6" method="_on_on_break"]

@@ -9,11 +9,8 @@ class_name DamageArea
 signal attackble_body_entered(area:AttackableBody)
 
 @export var base_damage:float = 1.0
-
 @export var base_knockback:float = 1.0
-
 @export var attackable_groups: Array[String] = []
-
 
 func _ready() -> void:
 	area_entered.connect(

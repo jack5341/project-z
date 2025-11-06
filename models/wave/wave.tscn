@@ -3,15 +3,15 @@
 [ext_resource type="Texture2D" uid="uid://dd4fwckf20j7x" path="res://models/wave/wave.png" id="1_hjkvu"]
 [ext_resource type="Script" uid="uid://d3c8sa743vcsy" path="res://models/wave/wave.gd" id="1_s0skp"]
 
-[sub_resource type="CylinderShape3D" id="1_cyl"]
-height = 0.2
-radius = 1.0
+[sub_resource type="BoxShape3D" id="BoxShape3D_afk15"]
+size = Vector3(5, 6.7000003, 1)
 
 [node name="Wave" type="Area3D"]
 script = ExtResource("1_s0skp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("1_cyl")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8500001, 0)
+shape = SubResource("BoxShape3D_afk15")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)

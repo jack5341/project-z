@@ -19,6 +19,8 @@ enum WaveSize {
 @export var direction: Vector3 = Vector3(1, 0, 0)
 @export var despawn_x: float = 120.0
 
+@export var attackable_groups: Array[String] = ["ship"]
+
 func _ready():
 	match wave_size:
 		WaveSize.Small:
@@ -28,8 +30,8 @@ func _ready():
 		WaveSize.Big:
 			scale = big_wave_size
 	
-	# Detect collisions with bodies (e.g., the ship)
-	body_entered.connect(_on_body_entered)
+	# Detect collisions with attackable areas (ship parts)
+	area_entered.connect(_on_area_entered)
 
 func _process(_delta: float) -> void:
 	if direction.length() > 0.0:
@@ -40,6 +42,10 @@ func _process(_delta: float) -> void:
 		elif direction.x < 0.0 and global_position.x <= despawn_x:
 			queue_free()
 
-func _on_body_entered(body: Node) -> void:
-	emit_signal("wave_hit", damage, body)
-	queue_free()
+func _on_area_entered(area: Area3D) -> void:
+	var group: String = str(area.get("body_group"))
+	if attackable_groups.is_empty() or attackable_groups.has(group):
+		if area.has_method("hit"):
+			area.call("hit", damage, speed)
+		emit_signal("wave_hit", damage, area)
+		queue_free()
