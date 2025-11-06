@@ -1,8 +1,9 @@
 extends CharacterBody3D
 
-@onready var model: Sprite3D = $RotationOffset/Model/Sprite3D
+@onready var model: Sprite3D = $RotationOffset/SpineModel/Sprite3D
 @onready var camera: Camera3D = $RotationOffset/Camera3D
 @onready var attackable_body: AttackableBody = $AttackableBody
+@onready var player_animator: AnimationPlayer = $PlayerAnimator
 
 
 @export var move_speed: float = 13.0
@@ -53,6 +54,13 @@ var tap_elapsed_right: float = 9999.0
 var is_sprinting: bool = false
 var tap_elapse_attack:float = 0
 
+# This is not called immidietly after attacking,
+# but is used by the animation player to add a 
+# slight delay. This is common in many games 
+# (heavy weapons in e.g. elden ring)
+func spawn_damage_area():
+	add_child(attack_scene.instantiate())
+
 func _unhandled_input(event: InputEvent) -> void:
 	#if event.is_action_pressed("exit"):
 		#get_tree().quit()
@@ -62,6 +70,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+	player_animator.play("player_idle")
 	
 
 func _physics_process(delta: float) -> void:
@@ -101,7 +110,7 @@ func _physics_process(delta: float) -> void:
 		tap_elapsed_right = 0.0
 	if Input.is_action_pressed("player_attack") and tap_elapse_attack>attack_delay:
 		tap_elapse_attack = 0
-		add_child(attack_scene.instantiate())
+		player_animator.play("player_slash")
 	
 	var any_move_pressed = Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")
 	if not any_move_pressed:

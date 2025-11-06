@@ -15,7 +15,8 @@ size = Vector3(5, 1, 5)
 
 [node name="PlayerSlash" type="Node3D"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="DebugVisualizer" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("QuadMesh_ra5s5")
 
 [node name="DamageArea" type="Area3D" parent="."]
