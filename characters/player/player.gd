@@ -1,8 +1,10 @@
 extends CharacterBody3D
 
-@onready var model: Sprite3D = $RotationOffset/Model
+@onready var model: Sprite3D = $RotationOffset/SpineModel/Sprite3D
 @onready var camera: Camera3D = $RotationOffset/Camera3D
-@onready var healthbar: ProgressBar = $CanvasLayer/SubViewport/Healthbar/ProgressBar
+@onready var attackable_body: AttackableBody = $AttackableBody
+@onready var player_animator: AnimationPlayer = $PlayerAnimator
+
 
 @export var move_speed: float = 13.0
 @export var gravity: float = 40.0
@@ -14,10 +16,6 @@ var base_camera_offset: Vector3 = Vector3.ZERO
 @export var wobble_amplitude: float = 0.05
 @export var wobble_speed: float = 8.0
 var wobble_timer: float = 0.0
-
-@export_category("Stats")
-@export var max_health: float = 100
-@export var health: float = 100
 
 @export_category("Stamina")
 @export var max_stamina: float = 100.0
@@ -48,11 +46,23 @@ var dash_direction: Vector3 = Vector3.ZERO
 @export var double_press_threshold = 0.3
 @export var sprint_speed: float = 16.0
 
+@export_category("Attack")
+@export var attack_scene: PackedScene
+@export var attack_delay: float = 1.0
+
 var tap_elapsed_forward: float = 9999.0
 var tap_elapsed_backward: float = 9999.0
 var tap_elapsed_left: float = 9999.0
 var tap_elapsed_right: float = 9999.0
 var is_sprinting: bool = false
+var tap_elapse_attack:float = 0
+
+# This is not called immidietly after attacking,
+# but is used by the animation player to add a 
+# slight delay. This is common in many games 
+# (heavy weapons in e.g. elden ring)
+func spawn_damage_area():
+	add_child(attack_scene.instantiate())
 
 func _unhandled_input(event: InputEvent) -> void:
 	#if event.is_action_pressed("exit"):
@@ -65,9 +75,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+	player_animator.play("player_idle")
 	
-	healthbar.max_value = max_health
-	healthbar.value = health
 
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
@@ -87,6 +96,7 @@ func _physics_process(delta: float) -> void:
 	tap_elapsed_backward += delta
 	tap_elapsed_left += delta
 	tap_elapsed_right += delta
+	tap_elapse_attack += delta
 	if Input.is_action_just_pressed("move_forward"):
 		if tap_elapsed_forward <= double_press_threshold:
 			is_sprinting = true
@@ -103,7 +113,10 @@ func _physics_process(delta: float) -> void:
 		if tap_elapsed_right <= double_press_threshold:
 			is_sprinting = true
 		tap_elapsed_right = 0.0
-
+	if Input.is_action_pressed("player_attack") and tap_elapse_attack>attack_delay:
+		tap_elapse_attack = 0
+		player_animator.play("player_slash")
+	
 	var any_move_pressed = Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")
 	if not any_move_pressed:
 		is_sprinting = false
@@ -175,12 +188,6 @@ func _physics_process(delta: float) -> void:
 			model.scale = Vector3(1.0, 0.9 + sin(t * PI) * 0.1, 1.0)
 	else:
 		model.scale = model.scale.lerp(Vector3.ONE, delta * 10.0)
-
-func _take_damage(amount: float) -> void:
-	health = max(health - amount, 0.0)
-	healthbar.value = health
-	if health <= 0.0:
-		_die()
 
 func _die() -> void:
 	pass

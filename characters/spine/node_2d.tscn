@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://vkdpsfxes55m"]
+
+[ext_resource type="SpineSkeletonDataResource" uid="uid://cu7u6543fxho2" path="res://characters/spine/spine.tres" id="1_67rrw"]
+[ext_resource type="Script" uid="uid://0v1xexlkb3ai" path="res://characters/spine/spine_sprite.gd" id="2_h44le"]
+
+[node name="Node2D" type="Node2D"]
+position = Vector2(582, 604)
+
+[node name="SpineSprite" type="SpineSprite" parent="."]
+skeleton_data_res = ExtResource("1_67rrw")
+preview_skin = "Default"
+preview_animation = "-- Empty --"
+preview_frame = false
+preview_time = 0.0
+position = Vector2(72, 32)
+scale = Vector2(0.54, 0.54)
+script = ExtResource("2_h44le")

@@ -16,15 +16,24 @@ class_name EnemyOnShipState
 
 @export var min_distance = 5
 
+@export_category("Attack")
+@export var attack_scene: PackedScene
+@export var attack_delay := 1.0
+@export var attack_distance := 1.0
+
+
+var time_since_attack := 0.0
 # Make the crab attack the player / target from different directions
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var random_target_offset:Vector3
+
+var has_attacked_in_air := false
 
 func _ready() -> void:
 	update_random_target_offset()
 
 func update_random_target_offset():
-	random_target_offset = Vector3(rng.randf_range(-3, 3), 0, rng.randf_range(-3, 3))
+	random_target_offset = Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1))
 	
 func set_target(target: Vector3):
 	nav_agent.target_position = target + random_target_offset
@@ -58,15 +67,33 @@ func accelerate_towards_target(delta:float):
 		curr_horizontal_velocity + 
 		get_target_dir() * delta * acceleration
 		)
+		
+func attack():
+	time_since_attack = 0
+	var attack_instance = attack_scene.instantiate()
+	body.add_child(attack_instance)
+	has_attacked_in_air = true
 
 func state_process(_delta:float):
+	time_since_attack += _delta
 	# If close to the player, jump attack the player
 	if(body.is_on_floor() && nav_agent.distance_to_target() < min_distance):
 		set_horizontal_velocity(get_target_dir() * 10.0)
 		body.velocity.y += 5.0
 		update_random_target_offset()
+		has_attacked_in_air = false
+		
 	# If on floor, accelerate towards target
 	elif(body.is_on_floor()):
 		accelerate_towards_target(_delta)
 		limit_horizontal_velocity()
+		has_attacked_in_air = false
+		
+	# Attack if close to player (and in the air)
+	if(!body.is_on_floor() && 
+		time_since_attack > attack_delay && 
+		nav_agent.distance_to_target() < attack_distance &&
+		!has_attacked_in_air
+		):
+		attack()
 	apply_gravity(_delta)

@@ -1,17 +1,90 @@
-[gd_scene load_steps=5 format=3 uid="uid://dn0vni80x0405"]
+[gd_scene load_steps=14 format=3 uid="uid://dn0vni80x0405"]
 
-[ext_resource type="Script" path="res://characters/player/player.gd" id="1_xxgcw"]
-[ext_resource type="Texture2D" uid="uid://cnjahjxu5ngww" path="res://assets/images/character.png" id="2_xxgcw"]
+[ext_resource type="Script" uid="uid://djjlls6v0a3tt" path="res://characters/player/player.gd" id="1_xxgcw"]
+[ext_resource type="PackedScene" uid="uid://dsi3kjg0rfxxo" path="res://characters/player/player_slash.tscn" id="2_5dc8e"]
+[ext_resource type="SpineSkeletonDataResource" uid="uid://cu7u6543fxho2" path="res://characters/spine/spine.tres" id="3_c6leb"]
+[ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="3_exd8k"]
+[ext_resource type="Script" uid="uid://0v1xexlkb3ai" path="res://characters/spine/spine_sprite.gd" id="4_dirf7"]
+[ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="5_ixbpm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_508ok"]
 size = Vector3(1.92041, 2.83291, 2.85197)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xxgcw"]
-viewport_path = NodePath("CanvasLayer/SubViewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_dirf7"]
+viewport_path = NodePath("RotationOffset/SpineModel/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_c6leb"]
+viewport_path = NodePath("AttackableBodyHealthbar")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5dc8e"]
+radius = 0.82373047
+height = 2.9016113
+
+[sub_resource type="Animation" id="Animation_dirf7"]
+resource_name = "player_idle"
+length = 0.2
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RotationOffset/SpineModel/SubViewport/SpineSprite")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["1 front - idle", true],
+"method": &"play_animation"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_c6leb"]
+resource_name = "player_slash"
+length = 0.8
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RotationOffset/SpineModel/SubViewport/SpineSprite")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6333333),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["1 front - slash"],
+"method": &"play_animation"
+}, {
+"args": ["1 front - idle", true],
+"method": &"play_animation"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.26666668),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"spawn_damage_area"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dirf7"]
+_data = {
+&"player_idle": SubResource("Animation_dirf7"),
+&"player_slash": SubResource("Animation_c6leb")
+}
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
 script = ExtResource("1_xxgcw")
 dash_cooldown = 0.5
+attack_scene = ExtResource("2_5dc8e")
+attack_delay = 0.35
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0162945, 0.00325489, -0.013339)
@@ -19,51 +92,55 @@ shape = SubResource("BoxShape3D_508ok")
 
 [node name="RotationOffset" type="Marker3D" parent="."]
 
-[node name="Model" type="Sprite3D" parent="RotationOffset"]
-transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 0, 0)
-pixel_size = 0.005
-billboard = 1
-no_depth_test = true
-alpha_cut = 2
-texture = ExtResource("2_xxgcw")
+[node name="SpineModel" type="Node3D" parent="RotationOffset"]
+transform = Transform3D(0.455, 0, 0, 0, 0.455, 0, 0, 0, 0.455, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="RotationOffset/Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+[node name="Sprite3D" type="Sprite3D" parent="RotationOffset/SpineModel"]
+billboard = 1
+texture = SubResource("ViewportTexture_dirf7")
+
+[node name="SubViewport" type="SubViewport" parent="RotationOffset/SpineModel"]
+transparent_bg = true
+size = Vector2i(1400, 777)
+
+[node name="SpineSprite" type="SpineSprite" parent="RotationOffset/SpineModel/SubViewport"]
+skeleton_data_res = ExtResource("3_c6leb")
+preview_skin = "Default"
+preview_animation = "-- Empty --"
+preview_frame = false
+preview_time = 0.0
+position = Vector2(700, 636)
+scale = Vector2(0.54, 0.54)
+script = ExtResource("4_dirf7")
+
+[node name="Camera3D" type="Camera3D" parent="RotationOffset/SpineModel"]
+transform = Transform3D(2.197802, 0, 0, 0, 1.8003342, 1.2606075, 0, -1.2606075, 1.8003342, 0, 20.16972, 28.805347)
 fov = 50.0
 size = 14.0
 
-[node name="Healthbar" type="Sprite3D" parent="RotationOffset/Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.41421, 1.41421)
+[node name="Healthbar" type="Sprite3D" parent="RotationOffset/SpineModel"]
+transform = Transform3D(2.197802, 0, 0, 0, 1.800334, 1.2606074, 0, -1.2606074, 1.800334, 0, 4.328825, 0.7632888)
 billboard = 1
 no_depth_test = true
 alpha_cut = 2
-texture = SubResource("ViewportTexture_xxgcw")
+texture = SubResource("ViewportTexture_c6leb")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="AttackableBody" type="Area3D" parent="."]
+script = ExtResource("3_exd8k")
+max_health = 10
+body_group = "player"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
 
-[node name="SubViewport" type="SubViewport" parent="CanvasLayer"]
-transparent_bg = true
-size = Vector2i(100, 100)
+[node name="HitBox" type="CollisionShape3D" parent="AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.044067383, 0)
+shape = SubResource("CapsuleShape3D_5dc8e")
 
-[node name="Healthbar" type="Control" parent="CanvasLayer/SubViewport"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="AttackableBodyHealthbar" parent="." node_paths=PackedStringArray("attackable_body") instance=ExtResource("5_ixbpm")]
+attackable_body = NodePath("../AttackableBody")
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/SubViewport/Healthbar"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -13.5
-offset_right = 50.0
-offset_bottom = 13.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="PlayerAnimator" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_dirf7")
+}
+
+[connection signal="on_break" from="AttackableBody" to="." method="queue_free"]

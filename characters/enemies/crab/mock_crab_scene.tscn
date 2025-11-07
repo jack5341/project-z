@@ -1,18 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://x62cw4vdrs20"]
+[gd_scene load_steps=10 format=3 uid="uid://x62cw4vdrs20"]
 
 [ext_resource type="PackedScene" uid="uid://bpekosltikvao" path="res://characters/enemies/crab/crab.tscn" id="1_o24i6"]
-[ext_resource type="Script" uid="uid://dshalxabrsdqb" path="res://utils/combat/damage_area.gd" id="2_mwe5d"]
+[ext_resource type="PackedScene" uid="uid://dn0vni80x0405" path="res://characters/player/player.tscn" id="1_sk15x"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_28h25"]
-vertices = PackedVector3Array(9.957642, 0.41869164, 4.5294895, 15.457642, 0.41869164, 4.5294895, 15.457642, 0.41869164, -1.9705105, -9.792358, 0.41869164, 4.5294895, -9.542358, 0.66869164, 5.7794895, 9.707642, 0.66869164, 5.7794895, -15.542358, 0.41869164, -25.97051, -15.542358, 0.41869164, 4.5294895, 18.457642, 0.41869164, -25.97051, 18.457642, 0.41869164, -2.2205105)
-polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(5, 3, 0), PackedInt32Array(3, 7, 2), PackedInt32Array(2, 7, 6), PackedInt32Array(2, 6, 8), PackedInt32Array(8, 9, 2), PackedInt32Array(2, 0, 3)]
+vertices = PackedVector3Array(-28.151657, 0.36164856, -15.358986, -16.651657, 0.36164856, -15.358986, -16.401657, 0.36164856, -17.608986, -12.151657, 0.36164856, -17.608986, -11.901657, 0.36164856, -47.358986, -28.151657, 0.36164856, -47.358986, -10.401657, 0.36164856, -17.358986, -10.401657, 0.36164856, -15.608986, 8.348343, 0.36164856, -15.608986, 8.348343, 0.36164856, -17.358986, 10.098343, 0.36164856, -17.608986, 9.848343, 0.36164856, -47.358986, 14.348343, 0.36164856, -17.608986, 14.598343, 0.36164856, -15.858986, 28.848343, 0.36164856, -16.108986, 28.848343, 0.36164856, -47.358986, -15.651657, 12.111649, -16.608986, -15.651657, 12.111649, -12.358986, -11.401657, 12.111649, -12.358986, -11.401657, 12.111649, -16.608986, 9.348343, 4.1116486, -16.608986, 9.348343, 4.1116486, -12.358986, 13.598343, 4.1116486, -12.358986, 13.598343, 4.1116486, -16.608986, -15.401657, 0.36164856, -16.358986, -15.401657, 0.36164856, -12.608986, -11.651657, 0.36164856, -12.608986, -11.651657, 0.36164856, -16.358986, 9.598343, 0.36164856, -16.358986, 9.598343, 0.36164856, -12.608986, 13.348343, 0.36164856, -12.608986, 13.348343, 0.36164856, -16.358986, 23.098343, 0.36164856, -6.108986, 23.348343, 0.36164856, -3.858986, 28.848343, 0.36164856, -3.858986, 14.598343, 0.36164856, -11.608986, 14.098343, 0.36164856, -11.358986, 17.598343, 0.36164856, -6.108986, 2.598343, 0.36164856, -3.108986, 8.348343, 0.36164856, -11.858986, -10.401657, 0.36164856, -11.858986, -2.651657, 0.36164856, -3.108986, -16.651657, 0.36164856, -11.608986, -15.151657, 0.36164856, 5.391014, -14.901657, 0.36164856, -11.358986, -28.151657, 0.36164856, 5.391014, 1.3483429, 0.36164856, 4.391014, 1.0983429, 0.36164856, 3.141014, -3.151657, 0.36164856, 2.891014, -10.401657, 0.36164856, 4.391014, -10.651657, 0.36164856, 5.391014, -3.151657, 0.36164856, -2.858986, -10.651657, 0.36164856, -11.358986, 3.098343, 0.36164856, 2.891014, 10.348343, 0.36164856, 4.391014, 18.598343, 0.36164856, 5.391014, 18.848343, 0.36164856, 0.1410141, 17.098343, 0.36164856, -0.1089859, 10.598343, 0.36164856, 5.391014, 17.098343, 0.36164856, -5.858986, 8.598343, 0.36164856, -11.358986, 3.098343, 0.36164856, -2.858986, 18.098343, 6.8616486, -5.108986, 18.098343, 6.8616486, -0.8589859, 22.348343, 6.8616486, -0.8589859, 22.348343, 6.8616486, -5.108986, 18.348343, 0.36164856, -4.858986, 18.348343, 0.36164856, -1.1089859, 22.098343, 0.36164856, -1.1089859, 22.098343, 0.36164856, -4.858986, 23.098343, 0.36164856, 0.1410141, 28.848343, 0.36164856, 5.391014, -2.151657, 7.8616486, -2.108986, -2.151657, 7.8616486, 2.141014, 2.098343, 7.8616486, 2.141014, 2.098343, 7.8616486, -2.108986, -1.9016571, 0.36164856, -1.8589859, -1.9016571, 0.36164856, 1.8910141, 1.8483429, 0.36164856, 1.8910141, 1.8483429, 0.36164856, -1.8589859, -9.651657, 1.3616486, 5.391014, -9.651657, 1.3616486, 5.891014, 9.598343, 1.3616486, 5.891014, 9.598343, 1.3616486, 5.391014)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 2), PackedInt32Array(0, 5, 2), PackedInt32Array(2, 5, 4), PackedInt32Array(9, 8, 6), PackedInt32Array(6, 8, 7), PackedInt32Array(6, 3, 9), PackedInt32Array(9, 3, 10), PackedInt32Array(10, 3, 4), PackedInt32Array(10, 4, 11), PackedInt32Array(14, 13, 12), PackedInt32Array(12, 10, 11), PackedInt32Array(14, 12, 15), PackedInt32Array(15, 12, 11), PackedInt32Array(19, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(23, 22, 20), PackedInt32Array(20, 22, 21), PackedInt32Array(27, 26, 24), PackedInt32Array(24, 26, 25), PackedInt32Array(31, 30, 28), PackedInt32Array(28, 30, 29), PackedInt32Array(34, 33, 32), PackedInt32Array(36, 35, 37), PackedInt32Array(37, 35, 32), PackedInt32Array(35, 13, 32), PackedInt32Array(32, 13, 34), PackedInt32Array(34, 13, 14), PackedInt32Array(39, 38, 8), PackedInt32Array(8, 38, 41), PackedInt32Array(8, 41, 40), PackedInt32Array(8, 40, 7), PackedInt32Array(0, 1, 42), PackedInt32Array(42, 44, 43), PackedInt32Array(43, 45, 42), PackedInt32Array(42, 45, 0), PackedInt32Array(47, 46, 48), PackedInt32Array(48, 46, 49), PackedInt32Array(43, 49, 50), PackedInt32Array(49, 43, 51), PackedInt32Array(51, 43, 52), PackedInt32Array(52, 43, 44), PackedInt32Array(51, 48, 49), PackedInt32Array(51, 52, 41), PackedInt32Array(41, 52, 40), PackedInt32Array(47, 53, 46), PackedInt32Array(46, 53, 54), PackedInt32Array(56, 55, 57), PackedInt32Array(57, 55, 54), PackedInt32Array(54, 55, 58), PackedInt32Array(37, 59, 36), PackedInt32Array(36, 59, 60), PackedInt32Array(53, 61, 54), PackedInt32Array(54, 61, 57), PackedInt32Array(57, 61, 59), PackedInt32Array(59, 61, 60), PackedInt32Array(61, 38, 60), PackedInt32Array(60, 38, 39), PackedInt32Array(65, 64, 62), PackedInt32Array(62, 64, 63), PackedInt32Array(69, 68, 66), PackedInt32Array(66, 68, 67), PackedInt32Array(55, 56, 70), PackedInt32Array(70, 33, 34), PackedInt32Array(34, 71, 70), PackedInt32Array(70, 71, 55), PackedInt32Array(75, 74, 72), PackedInt32Array(72, 74, 73), PackedInt32Array(79, 78, 76), PackedInt32Array(76, 78, 77), PackedInt32Array(83, 82, 80), PackedInt32Array(80, 82, 81)]
 
 [sub_resource type="QuadMesh" id="QuadMesh_28h25"]
-size = Vector2(31.705, 25.56)
+size = Vector2(50, 50)
 orientation = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sk15x"]
-size = Vector3(34.982483, 1.210083, 31.225525)
+size = Vector3(58.017654, 1.210083, 53.69255)
 
 [sub_resource type="BoxMesh" id="BoxMesh_mwe5d"]
 size = Vector3(20.035, 8.9, 1.37)
@@ -20,16 +20,11 @@ size = Vector3(20.035, 8.9, 1.37)
 [sub_resource type="BoxShape3D" id="BoxShape3D_mwe5d"]
 size = Vector3(19.967651, 23.609985, 1)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_o4ev1"]
-radius = 1.125
+[sub_resource type="BoxMesh" id="BoxMesh_sk15x"]
+size = Vector3(5, 15, 5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ptia"]
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_ptx21"]
-material = SubResource("StandardMaterial3D_6ptia")
-radius = 0.87
-height = 4.485
+[sub_resource type="BoxShape3D" id="BoxShape3D_ju2js"]
+size = Vector3(5, 15, 5)
 
 [node name="MockCrabScene" type="Node3D"]
 
@@ -37,14 +32,14 @@ height = 4.485
 navigation_mesh = SubResource("NavigationMesh_28h25")
 
 [node name="Ground" type="MeshInstance3D" parent="NavigationRegion3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.939871)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -19.342186)
 mesh = SubResource("QuadMesh_28h25")
 skeleton = NodePath("../..")
 
 [node name="staticbody" type="StaticBody3D" parent="NavigationRegion3D/Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Ground/staticbody"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.448883, -0.6141968, -2.9178772)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3571701, -0.6141968, -1.6705246)
 shape = SubResource("BoxShape3D_sk15x")
 
 [node name="ShipWall" type="MeshInstance3D" parent="NavigationRegion3D"]
@@ -57,46 +52,55 @@ mesh = SubResource("BoxMesh_mwe5d")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1035156e-05, -7.349182, 0)
 shape = SubResource("BoxShape3D_mwe5d")
 
+[node name="ObstacleExample" type="MeshInstance3D" parent="NavigationRegion3D"]
+mesh = SubResource("BoxMesh_sk15x")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ObstacleExample"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ObstacleExample/StaticBody3D"]
+shape = SubResource("BoxShape3D_ju2js")
+
+[node name="ObstacleExample2" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6467285, 4.335188, -14.566954)
+mesh = SubResource("BoxMesh_sk15x")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ObstacleExample2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ObstacleExample2/StaticBody3D"]
+shape = SubResource("BoxShape3D_ju2js")
+
+[node name="ObstacleExample3" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.441414, -3.6456013, -14.566954)
+mesh = SubResource("BoxMesh_sk15x")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ObstacleExample3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ObstacleExample3/StaticBody3D"]
+shape = SubResource("BoxShape3D_ju2js")
+
+[node name="ObstacleExample4" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.139822, -1.0958667, -3.045826)
+mesh = SubResource("BoxMesh_sk15x")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ObstacleExample4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ObstacleExample4/StaticBody3D"]
+shape = SubResource("BoxShape3D_ju2js")
+
+[node name="Player" parent="." instance=ExtResource("1_sk15x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.191393, 1.3523712, -1.134161)
+
 [node name="Crab" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.460443, -5.887216, 9.008687)
-target_node = NodePath("../Target")
+target_node = NodePath("../Player")
 
 [node name="Crab2" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7918878, -7.9228406, 9.008687)
-target_node = NodePath("../Target")
+target_node = NodePath("../Player")
 
 [node name="Crab3" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.238189, -2.1803517, 9.008687)
-target_node = NodePath("../Target")
-
-[node name="Crab4" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.460443, -5.887216, 15.749197)
-target_node = NodePath("../Target")
-
-[node name="Crab5" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1130238, -7.9228406, 17.344513)
-target_node = NodePath("../Target")
-
-[node name="Crab6" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.204404, -9.607582, 20.606739)
-target_node = NodePath("../Target")
-
-[node name="Target" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7036443, 0, -7.0466266)
-
-[node name="EnemyDamageArea" type="Area3D" parent="Target"]
-script = ExtResource("2_mwe5d")
-attackable_groups = Array[String](["enemy"])
-
-[node name="DamageHitbox" type="CollisionShape3D" parent="Target/EnemyDamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9370694, 0)
-shape = SubResource("SphereShape3D_o4ev1")
-
-[node name="TargetMesh" type="MeshInstance3D" parent="Target"]
-mesh = SubResource("SphereMesh_ptx21")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9172548, 0.39830086, 0, -0.39830086, 0.9172548, 0, 3.252649, 14.806815)
+target_node = NodePath("../Player")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.3882073, 0.9215721, 0, -0.9215721, 0.3882073, 0, 7.301201, 12.409823)
+transform = Transform3D(0.9555824, -0.11441409, -0.2716096, 0.2947242, 0.37096405, 0.88063806, 0, -0.9215721, 0.38820732, -12.477627, 14.78931, 12.409823)

@@ -1,0 +1,8 @@
+[gd_resource type="SpineSkeletonDataResource" load_steps=3 format=3 uid="uid://cu7u6543fxho2"]
+
+[ext_resource type="SpineAtlasResource" uid="uid://dpfh0i471t8cx" path="res://characters/spine/PirateSprite.atlas" id="1_fuu26"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://dppum2fb2dnch" path="res://characters/spine/PirateSprite.skel" id="2_k1fu5"]
+
+[resource]
+atlas_res = ExtResource("1_fuu26")
+skeleton_file_res = ExtResource("2_k1fu5")

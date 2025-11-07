@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpekosltikvao"]
+[gd_scene load_steps=12 format=3 uid="uid://bpekosltikvao"]
 
 [ext_resource type="Script" uid="uid://bw5g8da3jxfb3" path="res://characters/enemies/crab/crab.gd" id="1_66stj"]
 [ext_resource type="Script" uid="uid://3nnvvh8kvbfo" path="res://utils/state/state_machine.gd" id="2_gwp0s"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://bhsoklb0g54lu" path="res://characters/enemies/crab/enemy_climbing_ship_state.gd" id="4_p8c51"]
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="5_ae4w6"]
 [ext_resource type="Texture2D" uid="uid://dengkskkgif6q" path="res://characters/enemies/crab/crab.png" id="5_cl3ub"]
+[ext_resource type="PackedScene" uid="uid://dnf7kynmiqvch" path="res://characters/enemies/crab/crab_attack.tscn" id="5_nvo1f"]
+[ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="8_ptlxy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pm1ix"]
 radius = 0.4975586
@@ -14,7 +16,11 @@ height = 0.9951172
 [sub_resource type="SphereShape3D" id="SphereShape3D_p8c51"]
 radius = 0.745
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_nvo1f"]
+viewport_path = NodePath("AttackableBodyHealthbar")
+
 [node name="Crab" type="CharacterBody3D" groups=["enemies"]]
+collision_layer = 4
 script = ExtResource("1_66stj")
 
 [node name="MovementStateHandler" type="Node" parent="."]
@@ -30,6 +36,9 @@ next_state = NodePath("../OnShipState")
 script = ExtResource("3_ggo2l")
 nav_agent = NodePath("../../NavigationAgent3D")
 body = NodePath("../..")
+attack_scene = ExtResource("5_nvo1f")
+attack_delay = 0.25
+attack_distance = 2.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.831331, 0)
@@ -44,10 +53,20 @@ shape = SubResource("CapsuleShape3D_pm1ix")
 
 [node name="AttackableBody" type="Area3D" parent="."]
 script = ExtResource("5_ae4w6")
+max_health = 5
 body_group = "enemy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackableBody"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5733756, 0)
 shape = SubResource("SphereShape3D_p8c51")
 
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.396541, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_nvo1f")
+
+[node name="AttackableBodyHealthbar" parent="." node_paths=PackedStringArray("attackable_body") instance=ExtResource("8_ptlxy")]
+attackable_body = NodePath("../AttackableBody")
+
 [connection signal="on_break" from="AttackableBody" to="." method="queue_free"]
+[connection signal="on_hit" from="AttackableBody" to="." method="knockback"]
