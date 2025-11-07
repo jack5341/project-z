@@ -24,6 +24,9 @@ var wobble_timer: float = 0.0
 @export var stamina: float = max_stamina
 @export var stamina_regen_rate: float = 10.0
 
+@export_category("Interact")
+@export var repair_range: float = 2.5
+
 # Jump animation variables
 @export_category("Jump")
 @export var jump_force: float = 10.0
@@ -56,6 +59,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		#get_tree().quit()
 	if event.is_action_pressed("exit"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if event.is_action_pressed("repair"):
+		_attempt_repair()
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -179,3 +184,21 @@ func _take_damage(amount: float) -> void:
 
 func _die() -> void:
 	pass
+
+func _attempt_repair() -> void:
+	var part = _find_repairable_ship_part()
+	if part != null:
+		part.repair()
+
+func _find_repairable_ship_part():
+	var nearest = null
+	var nearest_dist_sq := INF
+	for node in get_tree().get_nodes_in_group("ship_parts"):
+		if node is ShipPart:
+			var sp: ShipPart = node
+			if sp.collision_shape_3d.disabled or sp.mesh_instance_3d.visible:
+				var d := global_transform.origin.distance_squared_to(sp.global_transform.origin)
+				if d <= repair_range * repair_range and d < nearest_dist_sq:
+					nearest = sp
+					nearest_dist_sq = d
+	return nearest
