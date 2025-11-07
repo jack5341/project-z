@@ -79,7 +79,8 @@ _data = {
 &"player_slash": SubResource("Animation_c6leb")
 }
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["players"]]
+
 collision_layer = 2
 script = ExtResource("1_xxgcw")
 dash_cooldown = 0.5

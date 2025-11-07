@@ -46,6 +46,6 @@ func _on_area_entered(area: Area3D) -> void:
 	var group: String = str(area.get("body_group"))
 	if attackable_groups.is_empty() or attackable_groups.has(group):
 		if area.has_method("hit"):
-			area.call("hit", damage, speed)
+			area.call("hit", damage, speed*direction)
 		emit_signal("wave_hit", damage, area)
 		queue_free()

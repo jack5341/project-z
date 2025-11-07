@@ -21,7 +21,7 @@ mesh = SubResource("QuadMesh_ra5s5")
 
 [node name="DamageArea" type="Area3D" parent="."]
 script = ExtResource("1_f1vjc")
-base_knockback = 17.5
+base_knockback = 4.0
 attackable_groups = Array[String](["enemy"])
 metadata/_custom_type_script = "uid://dshalxabrsdqb"
 

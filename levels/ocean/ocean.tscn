@@ -1,10 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://gcbxrkjmsvos"]
+[gd_scene load_steps=20 format=3 uid="uid://gcbxrkjmsvos"]
 
 [ext_resource type="Material" uid="uid://ddo1g7x44rq1h" path="res://shaders/water.tres" id="1_j25bp"]
 [ext_resource type="Script" uid="uid://bw7bj23lrc64y" path="res://utils/rock/rockspawner.gd" id="2_d6hyc"]
 [ext_resource type="PackedScene" uid="uid://xqygc3dedr2h" path="res://models/ship/ship.tscn" id="4_8wseo"]
 [ext_resource type="Script" uid="uid://c08fouanews6e" path="res://utils/wave/wave.gd" id="4_wm15w"]
 [ext_resource type="PackedScene" uid="uid://dn0vni80x0405" path="res://characters/player/player.tscn" id="5_kg4sb"]
+[ext_resource type="Script" uid="uid://b1apnxdiwlw6l" path="res://utils/enemy_waves/enemy_wave_handler.gd" id="6_cwn0e"]
+[ext_resource type="PackedScene" uid="uid://bpekosltikvao" path="res://characters/enemies/crab/crab.tscn" id="7_rm0u8"]
+[ext_resource type="Script" uid="uid://6ix82m43o37x" path="res://utils/enemy_waves/spawn_spawner_event.gd" id="8_h0sva"]
+[ext_resource type="PackedScene" uid="uid://rmhxeutefyp3" path="res://characters/enemies/enemy_spawner.tscn" id="9_j48uv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i5arm"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -25,6 +29,71 @@ size = Vector2(500, 500)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j25bp"]
 albedo_color = Color(0.133698, 0.210111, 0.149827, 1)
 
+[sub_resource type="Resource" id="Resource_rm0u8"]
+script = ExtResource("8_h0sva")
+spawner_scene = ExtResource("9_j48uv")
+enemy_scene = ExtResource("7_rm0u8")
+spawn_delay = 5.0
+max_enemies_spawned = 4
+max_spawn_time = 30.0
+position_randomness = Vector3(2, 0, 0)
+max_enemies_randomness = 2
+spawn_delay_randomness = 1.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_ju2js"]
+resource_name = "wave1"
+length = 30.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_rm0u8")],
+"method": &"execute_event"
+}]
+}
+
+[sub_resource type="Resource" id="Resource_cwn0e"]
+script = ExtResource("8_h0sva")
+spawner_scene = ExtResource("9_j48uv")
+enemy_scene = ExtResource("7_rm0u8")
+spawn_delay = 2.0
+max_spawn_time = 30.0
+position_randomness = Vector3(2, 0, 0)
+max_enemies_randomness = 5
+spawn_delay_randomness = 1.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_tq3bg"]
+resource_name = "wave2"
+length = 30.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_cwn0e")],
+"method": &"execute_event"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tq3bg"]
+_data = {
+&"wave1": SubResource("Animation_ju2js"),
+&"wave2": SubResource("Animation_tq3bg")
+}
+
 [node name="Node3D" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -37,6 +106,7 @@ environment = SubResource("Environment_jsk3o")
 
 [node name="water" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8040102, 0)
+sorting_offset = -100.0
 material_override = ExtResource("1_j25bp")
 mesh = SubResource("PlaneMesh_i5arm")
 
@@ -54,7 +124,7 @@ area_size = Vector2(500, 500)
 rock_scene_path = "uid://cdiug2preeho5"
 spawn_on_ready = true
 
-[node name="WaveManager" type="Node" parent="."]
+[node name="WaterWaveManager" type="Node" parent="."]
 script = ExtResource("4_wm15w")
 wave_count = 500
 wave_interval = 0.5
@@ -66,3 +136,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.37009, -3)
 
 [node name="Player" parent="." instance=ExtResource("5_kg4sb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6.2733703, -2.8)
+repair_range = 6.25
+
+[node name="WaveEventHandler" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.061429, 1.9044485, 21.356426)
+script = ExtResource("6_cwn0e")
+wave_names = Array[String](["wave1", "wave2"])
+
+[node name="WaveAnimator" type="AnimationPlayer" parent="WaveEventHandler"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_tq3bg")
+}

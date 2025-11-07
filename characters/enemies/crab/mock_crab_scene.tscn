@@ -1,7 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://x62cw4vdrs20"]
+[gd_scene load_steps=19 format=3 uid="uid://x62cw4vdrs20"]
 
 [ext_resource type="PackedScene" uid="uid://bpekosltikvao" path="res://characters/enemies/crab/crab.tscn" id="1_o24i6"]
 [ext_resource type="PackedScene" uid="uid://dn0vni80x0405" path="res://characters/player/player.tscn" id="1_sk15x"]
+[ext_resource type="Script" uid="uid://b1apnxdiwlw6l" path="res://utils/enemy_waves/enemy_wave_handler.gd" id="3_sk15x"]
+[ext_resource type="Script" uid="uid://6ix82m43o37x" path="res://utils/enemy_waves/spawn_spawner_event.gd" id="6_mbuwf"]
+[ext_resource type="PackedScene" uid="uid://rmhxeutefyp3" path="res://characters/enemies/enemy_spawner.tscn" id="6_njm2q"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_28h25"]
 vertices = PackedVector3Array(-28.151657, 0.36164856, -15.358986, -16.651657, 0.36164856, -15.358986, -16.401657, 0.36164856, -17.608986, -12.151657, 0.36164856, -17.608986, -11.901657, 0.36164856, -47.358986, -28.151657, 0.36164856, -47.358986, -10.401657, 0.36164856, -17.358986, -10.401657, 0.36164856, -15.608986, 8.348343, 0.36164856, -15.608986, 8.348343, 0.36164856, -17.358986, 10.098343, 0.36164856, -17.608986, 9.848343, 0.36164856, -47.358986, 14.348343, 0.36164856, -17.608986, 14.598343, 0.36164856, -15.858986, 28.848343, 0.36164856, -16.108986, 28.848343, 0.36164856, -47.358986, -15.651657, 12.111649, -16.608986, -15.651657, 12.111649, -12.358986, -11.401657, 12.111649, -12.358986, -11.401657, 12.111649, -16.608986, 9.348343, 4.1116486, -16.608986, 9.348343, 4.1116486, -12.358986, 13.598343, 4.1116486, -12.358986, 13.598343, 4.1116486, -16.608986, -15.401657, 0.36164856, -16.358986, -15.401657, 0.36164856, -12.608986, -11.651657, 0.36164856, -12.608986, -11.651657, 0.36164856, -16.358986, 9.598343, 0.36164856, -16.358986, 9.598343, 0.36164856, -12.608986, 13.348343, 0.36164856, -12.608986, 13.348343, 0.36164856, -16.358986, 23.098343, 0.36164856, -6.108986, 23.348343, 0.36164856, -3.858986, 28.848343, 0.36164856, -3.858986, 14.598343, 0.36164856, -11.608986, 14.098343, 0.36164856, -11.358986, 17.598343, 0.36164856, -6.108986, 2.598343, 0.36164856, -3.108986, 8.348343, 0.36164856, -11.858986, -10.401657, 0.36164856, -11.858986, -2.651657, 0.36164856, -3.108986, -16.651657, 0.36164856, -11.608986, -15.151657, 0.36164856, 5.391014, -14.901657, 0.36164856, -11.358986, -28.151657, 0.36164856, 5.391014, 1.3483429, 0.36164856, 4.391014, 1.0983429, 0.36164856, 3.141014, -3.151657, 0.36164856, 2.891014, -10.401657, 0.36164856, 4.391014, -10.651657, 0.36164856, 5.391014, -3.151657, 0.36164856, -2.858986, -10.651657, 0.36164856, -11.358986, 3.098343, 0.36164856, 2.891014, 10.348343, 0.36164856, 4.391014, 18.598343, 0.36164856, 5.391014, 18.848343, 0.36164856, 0.1410141, 17.098343, 0.36164856, -0.1089859, 10.598343, 0.36164856, 5.391014, 17.098343, 0.36164856, -5.858986, 8.598343, 0.36164856, -11.358986, 3.098343, 0.36164856, -2.858986, 18.098343, 6.8616486, -5.108986, 18.098343, 6.8616486, -0.8589859, 22.348343, 6.8616486, -0.8589859, 22.348343, 6.8616486, -5.108986, 18.348343, 0.36164856, -4.858986, 18.348343, 0.36164856, -1.1089859, 22.098343, 0.36164856, -1.1089859, 22.098343, 0.36164856, -4.858986, 23.098343, 0.36164856, 0.1410141, 28.848343, 0.36164856, 5.391014, -2.151657, 7.8616486, -2.108986, -2.151657, 7.8616486, 2.141014, 2.098343, 7.8616486, 2.141014, 2.098343, 7.8616486, -2.108986, -1.9016571, 0.36164856, -1.8589859, -1.9016571, 0.36164856, 1.8910141, 1.8483429, 0.36164856, 1.8910141, 1.8483429, 0.36164856, -1.8589859, -9.651657, 1.3616486, 5.391014, -9.651657, 1.3616486, 5.891014, 9.598343, 1.3616486, 5.891014, 9.598343, 1.3616486, 5.391014)
@@ -14,17 +17,85 @@ orientation = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_sk15x"]
 size = Vector3(58.017654, 1.210083, 53.69255)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tq3bg"]
+albedo_color = Color(0.24406734, 0.20514572, 0.09740529, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_mwe5d"]
-size = Vector3(20.035, 8.9, 1.37)
+material = SubResource("StandardMaterial3D_tq3bg")
+size = Vector3(51.98, 8.9, 1.37)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mwe5d"]
-size = Vector3(19.967651, 23.609985, 1)
+size = Vector3(54.498016, 23.609985, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sk15x"]
 size = Vector3(5, 15, 5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ju2js"]
 size = Vector3(5, 15, 5)
+
+[sub_resource type="Resource" id="Resource_tq3bg"]
+script = ExtResource("6_mbuwf")
+spawner_scene = ExtResource("6_njm2q")
+enemy_scene = ExtResource("1_o24i6")
+spawn_delay = 1.5
+max_enemies_spawned = 3
+max_spawn_time = 10.0
+position_randomness = Vector3(8, 0, 0)
+max_enemies_randomness = 1
+spawn_delay_randomness = 0.5
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_ju2js"]
+resource_name = "wave1"
+length = 30.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_tq3bg")],
+"method": &"execute_event"
+}]
+}
+
+[sub_resource type="Resource" id="Resource_njm2q"]
+script = ExtResource("6_mbuwf")
+spawner_scene = ExtResource("6_njm2q")
+enemy_scene = ExtResource("1_o24i6")
+spawn_delay = 0.5
+position_randomness = Vector3(8, 0, 0)
+max_enemies_randomness = 5
+spawn_delay_randomness = 0.2
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_tq3bg"]
+resource_name = "wave2"
+length = 30.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_njm2q")],
+"method": &"execute_event"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tq3bg"]
+_data = {
+&"wave1": SubResource("Animation_ju2js"),
+&"wave2": SubResource("Animation_tq3bg")
+}
 
 [node name="MockCrabScene" type="Node3D"]
 
@@ -49,10 +120,11 @@ mesh = SubResource("BoxMesh_mwe5d")
 [node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ShipWall"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/ShipWall/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1035156e-05, -7.349182, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.93022156, -7.3491817, 0)
 shape = SubResource("BoxShape3D_mwe5d")
 
 [node name="ObstacleExample" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.8068304)
 mesh = SubResource("BoxMesh_sk15x")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/ObstacleExample"]
@@ -90,17 +162,16 @@ shape = SubResource("BoxShape3D_ju2js")
 [node name="Player" parent="." instance=ExtResource("1_sk15x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.191393, 1.3523712, -1.134161)
 
-[node name="Crab" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.460443, -5.887216, 9.008687)
-target_node = NodePath("../Player")
-
-[node name="Crab2" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7918878, -7.9228406, 9.008687)
-target_node = NodePath("../Player")
-
-[node name="Crab3" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("1_o24i6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.238189, -2.1803517, 9.008687)
-target_node = NodePath("../Player")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.9555824, -0.11441409, -0.2716096, 0.2947242, 0.37096405, 0.88063806, 0, -0.9215721, 0.38820732, -12.477627, 14.78931, 12.409823)
+
+[node name="WaveEventHandler" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16.10834, 25.027397)
+script = ExtResource("3_sk15x")
+wave_names = Array[String](["wave1", "wave2"])
+
+[node name="WaveAnimator" type="AnimationPlayer" parent="WaveEventHandler"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_tq3bg")
+}
