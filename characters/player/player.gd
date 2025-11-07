@@ -1,16 +1,26 @@
 extends CharacterBody3D
 
-@onready var model: Sprite3D = $RotationOffset/SpineModel/Sprite3D
-@onready var camera: Camera3D = $RotationOffset/Camera3D
+@onready var model: Sprite3D = $RotationOffset/SpineSprite/Sprite3D
+@onready var camera: Camera3D = $RotationOffset/SpineSprite/Camera3D
 @onready var attackable_body: AttackableBody = $AttackableBody
-@onready var player_animator: AnimationPlayer = $PlayerAnimator
-
+@onready var spine_anim = $RotationOffset/SpineSprite/SubViewport/Node2D/SpineSprite
 
 @export var move_speed: float = 13.0
 @export var gravity: float = 40.0
 
 var camera_offset: Vector3 = Vector3.ZERO
 var base_camera_offset: Vector3 = Vector3.ZERO
+
+# Spine animation state
+var _current_anim_name: String = ""
+var _current_anim_loop: bool = false
+
+func _play_anim(anim_name: String, loop: bool) -> void:
+	if anim_name != _current_anim_name or loop != _current_anim_loop:
+		print("Playing anim: ", anim_name, " loop: ", loop)
+		spine_anim.play_animation(anim_name, loop)
+		_current_anim_name = anim_name
+		_current_anim_loop = loop
 
 @export_category("Wobble")
 @export var wobble_amplitude: float = 0.05
@@ -37,6 +47,7 @@ var jump_anim_duration: float = 0.3
 @export var dash_force: float = 30.0
 @export var dash_duration: float = 0.1
 @export var dash_cooldown: float = 1.0
+@export var roll_anim_lock: float = 0.5
 var is_dashing: bool = false
 var dash_timer: float = 0.0
 var dash_cooldown_timer: float = 0.0
@@ -49,6 +60,7 @@ var dash_direction: Vector3 = Vector3.ZERO
 @export_category("Attack")
 @export var attack_scene: PackedScene
 @export var attack_delay: float = 1.0
+@export var slash_anim_lock: float = 0.45
 
 var tap_elapsed_forward: float = 9999.0
 var tap_elapsed_backward: float = 9999.0
@@ -56,6 +68,9 @@ var tap_elapsed_left: float = 9999.0
 var tap_elapsed_right: float = 9999.0
 var is_sprinting: bool = false
 var tap_elapse_attack:float = 0
+
+# Prevent locomotion from instantly overriding one-shot animations (slash/roll)
+var anim_lock_time: float = 0.0
 
 # This is not called immidietly after attacking,
 # but is used by the animation player to add a 
@@ -75,9 +90,15 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
-	player_animator.play("player_idle")
+	_play_anim("1 front - idle", true)
+	# Connect to Spine animation completion to release one-shot locks
+	var state = spine_anim.get_animation_state()
+	if state != null:
+		if state.has_signal("animation_complete") and not state.is_connected("animation_complete", Callable(self, "_on_spine_animation_complete")):
+			state.animation_complete.connect(_on_spine_animation_complete)
+		if state.has_signal("animation_end") and not state.is_connected("animation_end", Callable(self, "_on_spine_animation_complete")):
+			state.animation_end.connect(_on_spine_animation_complete)
 	
-
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
 	if Input.is_action_pressed("move_forward"):
@@ -91,6 +112,10 @@ func _physics_process(delta: float) -> void:
 
 	direction = direction.normalized()
 	var is_moving = direction != Vector3.ZERO
+
+	# countdown animation lock
+	if anim_lock_time > 0.0:
+		anim_lock_time = max(anim_lock_time - delta, 0.0)
 
 	tap_elapsed_forward += delta
 	tap_elapsed_backward += delta
@@ -115,7 +140,9 @@ func _physics_process(delta: float) -> void:
 		tap_elapsed_right = 0.0
 	if Input.is_action_pressed("player_attack") and tap_elapse_attack>attack_delay:
 		tap_elapse_attack = 0
-		player_animator.play("player_slash")
+		_play_anim("1 front - slash", false)
+		spawn_damage_area()
+		anim_lock_time = max(anim_lock_time, slash_anim_lock)
 	
 	var any_move_pressed = Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")
 	if not any_move_pressed:
@@ -148,6 +175,8 @@ func _physics_process(delta: float) -> void:
 			var cur_y = velocity.y
 			velocity = dash_direction * dash_force
 			velocity.y = cur_y
+			_play_anim("1 front - roll", false)
+			anim_lock_time = max(anim_lock_time, max(roll_anim_lock, dash_duration))
 
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -156,6 +185,7 @@ func _physics_process(delta: float) -> void:
 			velocity.y = jump_force
 			is_jumping = true
 			jump_anim_timer = 0.0
+			_play_anim("1 front - jump", false)
 		else:
 			is_jumping = false
 
@@ -168,6 +198,13 @@ func _physics_process(delta: float) -> void:
 			velocity.z = 0.0
 
 	move_and_slide()
+
+	# Grounded locomotion animations (idle/walk) unless rolling/dashing or locked by one-shot
+	if is_on_floor() and not is_dashing and anim_lock_time <= 0.0:
+		if direction != Vector3.ZERO:
+			_play_anim("1 front - walk", true)
+		else:
+			_play_anim("1 front - idle", true)
 
 	if is_moving and is_on_floor() and not is_dashing:
 		wobble_timer += delta * wobble_speed
@@ -191,6 +228,10 @@ func _physics_process(delta: float) -> void:
 
 func _die() -> void:
 	pass
+
+func _on_spine_animation_complete(_entry = null) -> void:
+	# Release one-shot lock when the current track completes
+	anim_lock_time = 0.0
 
 func _attempt_repair() -> void:
 	var part = _find_repairable_ship_part()

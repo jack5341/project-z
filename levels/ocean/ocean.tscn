@@ -65,4 +65,4 @@ metadata/_custom_type_script = "uid://c08fouanews6e"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.37009, -3)
 
 [node name="Player" parent="." instance=ExtResource("5_kg4sb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6.2733703, -2.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5.5733705, -2.8)
