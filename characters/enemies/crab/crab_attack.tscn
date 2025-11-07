@@ -7,11 +7,11 @@ albedo_color = Color(0.54337394, 0, 0.08711483, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_035si"]
 material = SubResource("StandardMaterial3D_prv4t")
-size = Vector2(4, 4)
+size = Vector2(2.805, 2.665)
 orientation = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wyewt"]
-size = Vector3(4.13151, 1, 3.9125366)
+size = Vector3(2.3682911, 1, 2.2776146)
 
 [node name="CrabAttack" type="Node3D"]
 
@@ -26,7 +26,7 @@ attackable_groups = Array[String](["player"])
 metadata/_custom_type_script = "uid://dshalxabrsdqb"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.039811134, 0, 0.039642334)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.045215487, 0, -0.08408165)
 shape = SubResource("BoxShape3D_wyewt")
 
 [node name="DestructionTimer" type="Timer" parent="."]
