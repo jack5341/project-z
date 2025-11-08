@@ -1,3 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Do not include the massive spine export
+# targets =)
+*.tpz
