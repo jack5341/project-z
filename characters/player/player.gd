@@ -41,6 +41,7 @@ var wobble_timer: float = 0.0
 var is_jumping: bool = false
 var jump_anim_timer: float = 0.0
 var jump_anim_duration: float = 0.3
+@export var jump_anim_lock: float = 0.3
 
 # Dash mechanic variables
 @export_category("Dash")
@@ -89,8 +90,6 @@ func _ready():
 	if state != null:
 		if state.has_signal("animation_complete") and not state.is_connected("animation_complete", Callable(self, "_on_spine_animation_complete")):
 			state.animation_complete.connect(_on_spine_animation_complete)
-		if state.has_signal("animation_end") and not state.is_connected("animation_end", Callable(self, "_on_spine_animation_complete")):
-			state.animation_end.connect(_on_spine_animation_complete)
 	
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
@@ -106,49 +105,15 @@ func _physics_process(delta: float) -> void:
 	direction = direction.normalized()
 	var is_moving = direction != Vector3.ZERO
 
-	# countdown animation lock
+	# Update one-shot animation lock countdown
 	if anim_lock_time > 0.0:
-		anim_lock_time = max(anim_lock_time - delta, 0.0)
+		anim_lock_time = max(0.0, anim_lock_time - delta)
 
-	tap_elapsed_forward += delta
-	tap_elapsed_backward += delta
-	tap_elapsed_left += delta
-	tap_elapsed_right += delta
-	tap_elapse_attack += delta
-	if Input.is_action_just_pressed("move_forward"):
-		if tap_elapsed_forward <= double_press_threshold:
-			is_sprinting = true
-		tap_elapsed_forward = 0.0
-	if Input.is_action_just_pressed("move_backward"):
-		if tap_elapsed_backward <= double_press_threshold:
-			is_sprinting = true
-		tap_elapsed_backward = 0.0
-	if Input.is_action_just_pressed("move_left"):
-		if tap_elapsed_left <= double_press_threshold:
-			is_sprinting = true
-		tap_elapsed_left = 0.0
-	if Input.is_action_just_pressed("move_right"):
-		if tap_elapsed_right <= double_press_threshold:
-			is_sprinting = true
-		tap_elapsed_right = 0.0
-	if Input.is_action_pressed("player_attack") and tap_elapse_attack>attack_delay:
-		tap_elapse_attack = 0
+	if Input.is_action_just_pressed("player_attack"):
 		_play_anim("1 front - slash", false)
 		spawn_damage_area()
 		anim_lock_time = max(anim_lock_time, slash_anim_lock)
 	
-	var any_move_pressed = Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right")
-	if not any_move_pressed:
-		is_sprinting = false
-
-	if is_sprinting and is_moving and stamina > 0.0:
-		stamina = max(stamina - stamina_regen_rate * delta, 0.0)
-	else:
-		stamina = min(stamina + stamina_regen_rate * delta, max_stamina)
-	if stamina <= 0.0:
-		is_sprinting = false
-
-	var speed = sprint_speed if (is_sprinting and is_moving and stamina > 0.0) else move_speed
 	if dash_cooldown_timer > 0.0:
 		dash_cooldown_timer -= delta
 
@@ -179,13 +144,14 @@ func _physics_process(delta: float) -> void:
 			is_jumping = true
 			jump_anim_timer = 0.0
 			_play_anim("1 front - jump", false)
+			anim_lock_time = max(anim_lock_time, jump_anim_lock)
 		else:
 			is_jumping = false
 
 	if not is_dashing:
 		if direction != Vector3.ZERO:
-			velocity.x = direction.x * speed
-			velocity.z = direction.z * speed
+			velocity.x = direction.x * move_speed
+			velocity.z = direction.z * move_speed
 		else:
 			velocity.x = 0.0
 			velocity.z = 0.0
