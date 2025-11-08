@@ -4,18 +4,26 @@ class_name EnemyWaveHandler
 
 #	Stores the animation names of the waves
 #	in order. 
-@export var wave_names: Array[String]
+var wave_names: PackedStringArray
 @onready var wave_animator: AnimationPlayer = $WaveAnimator
 
 var curr_wave_id := 0
 
 func _ready() -> void:
-	play_wave(0)
+	wave_names = wave_animator.get_animation_list()
+	
+	# Remove Reset animation
+	wave_names.remove_at(0)
+	wave_names.sort()
+	print("wave names: ", wave_names)
+	
 	# When the animation wave is over, start the next one!
 	wave_animator.animation_finished.connect(
 		func(_name):
 			play_next_wave()
 	)
+	
+	play_wave(0)
 
 # When we start the next wave, we kill all the nodes
 # spawned during the wave
