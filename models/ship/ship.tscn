@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://xqygc3dedr2h"]
+[gd_scene load_steps=15 format=3 uid="uid://xqygc3dedr2h"]
 
 [ext_resource type="Texture2D" uid="uid://dld6b8lroljrt" path="res://assets/images/floor.png" id="1_1tolm"]
 [ext_resource type="PackedScene" uid="uid://blpn7bnyndyqh" path="res://models/fence/fence.tscn" id="2_bb37m"]
 [ext_resource type="Script" uid="uid://dtustnkv2so7i" path="res://models/ship/shippart.gd" id="2_vlt18"]
 [ext_resource type="Texture2D" uid="uid://b4i1l1snj71f5" path="res://assets/images/rear.png" id="3_rlhmo"]
+[ext_resource type="Script" uid="uid://cw4y17g2mm536" path="res://models/ship/ship.gd" id="4_shipsc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bb37m"]
 albedo_texture = ExtResource("1_1tolm")
@@ -40,6 +41,7 @@ material = SubResource("StandardMaterial3D_rlhmo")
 size = Vector3(10, 3, 1)
 
 [node name="Ship" type="Node3D"]
+script = ExtResource("4_shipsc")
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_6knpu")

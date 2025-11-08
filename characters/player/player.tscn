@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dn0vni80x0405"]
+[gd_scene load_steps=14 format=3 uid="uid://dn0vni80x0405"]
 
 [ext_resource type="Script" uid="uid://djjlls6v0a3tt" path="res://characters/player/player.gd" id="1_xxgcw"]
 [ext_resource type="Script" uid="uid://dshalxabrsdqb" path="res://utils/combat/damage_area.gd" id="2_xxgcw"]
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="3_exd8k"]
 [ext_resource type="PackedScene" uid="uid://df3sbp0q8sqj3" path="res://characters/spine/spine.tscn" id="3_ixbpm"]
 [ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="5_ixbpm"]
+[ext_resource type="PackedScene" uid="uid://ftvjwcrrvkj5" path="res://ui/ui.tscn" id="6_c6leb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f1vjc"]
 albedo_color = Color(1, 0, 1, 1)
@@ -81,5 +82,7 @@ shape = SubResource("CapsuleShape3D_5dc8e")
 
 [node name="AttackableBodyHealthbar" parent="." node_paths=PackedStringArray("attackable_body") instance=ExtResource("5_ixbpm")]
 attackable_body = NodePath("../AttackableBody")
+
+[node name="UI" parent="." instance=ExtResource("6_c6leb")]
 
 [connection signal="on_break" from="AttackableBody" to="." method="queue_free"]

@@ -22,7 +22,7 @@ position = Vector2(582, 604)
 [node name="SpineSprite" type="SpineSprite" parent="SubViewport/Node2D"]
 skeleton_data_res = ExtResource("1_x6gpb")
 preview_skin = "default"
-preview_animation = "1 front - slash"
+preview_animation = "-- Empty --"
 preview_frame = false
 preview_time = 0.6666667
 position = Vector2(72, 32)
