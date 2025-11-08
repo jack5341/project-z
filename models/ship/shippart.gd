@@ -12,7 +12,7 @@ func _on_on_break() -> void:
 
 func repair() -> void:
 	if collision_shape_3d.disabled or mesh_instance_3d.visible:
-		print("repairing shddddip part: ", name)
+		print("repairing ship part: ", name)
 		collision_shape_3d.disabled = false
 		mesh_instance_3d.visible = true
 		health = max_health

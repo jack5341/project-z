@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dn0vni80x0405"]
+[gd_scene load_steps=15 format=3 uid="uid://dn0vni80x0405"]
 
 [ext_resource type="Script" uid="uid://djjlls6v0a3tt" path="res://characters/player/player.gd" id="1_xxgcw"]
 [ext_resource type="PackedScene" uid="uid://dsi3kjg0rfxxo" path="res://characters/player/player_slash.tscn" id="2_5dc8e"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="3_exd8k"]
 [ext_resource type="Script" uid="uid://0v1xexlkb3ai" path="res://characters/spine/spine_sprite.gd" id="4_dirf7"]
 [ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="5_ixbpm"]
+[ext_resource type="AudioStream" uid="uid://bebdlxolwanas" path="res://assets/sounds/piratesgame.mp3" id="7_dirf7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_508ok"]
 size = Vector3(1.92041, 2.83291, 2.85197)
@@ -80,7 +81,6 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D" groups=["players"]]
-
 collision_layer = 2
 script = ExtResource("1_xxgcw")
 dash_cooldown = 0.5
@@ -143,5 +143,11 @@ attackable_body = NodePath("../AttackableBody")
 libraries = {
 &"": SubResource("AnimationLibrary_dirf7")
 }
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("7_dirf7")
+volume_db = -24.542
+autoplay = true
+parameters/looping = true
 
 [connection signal="on_break" from="AttackableBody" to="." method="queue_free"]
