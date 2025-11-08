@@ -18,6 +18,7 @@ class_name EnemyOnShipState
 
 @export_category("Attack")
 @export var attack_scene: PackedScene
+@export var attack_state: State 
 @export var attack_delay := 1.0
 @export var attack_distance := 1.0
 
@@ -78,10 +79,7 @@ func state_process(_delta:float):
 	time_since_attack += _delta
 	# If close to the player, jump attack the player
 	if(body.is_on_floor() && nav_agent.distance_to_target() < min_distance):
-		set_horizontal_velocity(get_target_dir() * 10.0)
-		body.velocity.y += 5.0
-		update_random_target_offset()
-		has_attacked_in_air = false
+		try_set_state(attack_state)
 		
 	# If on floor, accelerate towards target
 	elif(body.is_on_floor()):
@@ -89,11 +87,4 @@ func state_process(_delta:float):
 		limit_horizontal_velocity()
 		has_attacked_in_air = false
 		
-	# Attack if close to player (and in the air)
-	if(!body.is_on_floor() && 
-		time_since_attack > attack_delay && 
-		nav_agent.distance_to_target() < attack_distance &&
-		!has_attacked_in_air
-		):
-		attack()
 	apply_gravity(_delta)

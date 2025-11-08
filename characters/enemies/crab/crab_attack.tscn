@@ -10,8 +10,8 @@ material = SubResource("StandardMaterial3D_prv4t")
 size = Vector2(2.805, 2.665)
 orientation = 1
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wyewt"]
-size = Vector3(2.3682911, 1, 2.2776146)
+[sub_resource type="SphereShape3D" id="SphereShape3D_035si"]
+radius = 1.2168745
 
 [node name="CrabAttack" type="Node3D"]
 
@@ -27,7 +27,7 @@ metadata/_custom_type_script = "uid://dshalxabrsdqb"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.045215487, 0, -0.08408165)
-shape = SubResource("BoxShape3D_wyewt")
+shape = SubResource("SphereShape3D_035si")
 
 [node name="DestructionTimer" type="Timer" parent="."]
 wait_time = 0.15

@@ -1,7 +1,6 @@
 extends CharacterBody3D
 
-@onready var on_ship_state: EnemyOnShipState = $MovementStateHandler/OnShipState
-
+@onready var walk_state: EnemyOnShipState = $MovementStateHandler/walkTowardsPlayerState
 
 var target_node:Node3D
 
@@ -16,6 +15,9 @@ func get_target() -> Node3D:
 
 func _physics_process(_delta: float) -> void:
 	target_node = get_target()
+	# Todo, this is a bit ugly, I think
+	# the state itself should get this
+	# info?
 	if(target_node is Node3D):
-		on_ship_state.set_target(target_node.global_position)
+		walk_state.set_target(target_node.global_position)
 	move_and_slide()

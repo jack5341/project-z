@@ -1,13 +1,91 @@
-[gd_scene load_steps=12 format=3 uid="uid://bpekosltikvao"]
+[gd_scene load_steps=16 format=3 uid="uid://bpekosltikvao"]
 
 [ext_resource type="Script" uid="uid://bw5g8da3jxfb3" path="res://characters/enemies/crab/crab.gd" id="1_66stj"]
 [ext_resource type="Script" uid="uid://3nnvvh8kvbfo" path="res://utils/state/state_machine.gd" id="2_gwp0s"]
-[ext_resource type="Script" uid="uid://chv4ntxkhgl6e" path="res://characters/enemies/crab/enemy_on_ship_state.gd" id="3_ggo2l"]
+[ext_resource type="Script" uid="uid://chv4ntxkhgl6e" path="res://characters/enemies/crab/walk_towards_player_state.gd" id="3_ggo2l"]
 [ext_resource type="Script" uid="uid://bhsoklb0g54lu" path="res://characters/enemies/crab/enemy_climbing_ship_state.gd" id="4_p8c51"]
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="5_ae4w6"]
 [ext_resource type="Texture2D" uid="uid://dengkskkgif6q" path="res://characters/enemies/crab/crab.png" id="5_cl3ub"]
 [ext_resource type="PackedScene" uid="uid://dnf7kynmiqvch" path="res://characters/enemies/crab/crab_attack.tscn" id="5_nvo1f"]
+[ext_resource type="Script" uid="uid://bw1u0533ho41" path="res://characters/enemies/crab/crab_attack_state.gd" id="6_c612j"]
 [ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="8_ptlxy"]
+
+[sub_resource type="Animation" id="Animation_c612j"]
+resource_name = "attack"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MovementStateHandler/crabAttackState")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.8, 0.96666664),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"jump"
+}, {
+"args": [],
+"method": &"_attack"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.79999995, 0.8666667),
+"transitions": PackedFloat32Array(3.1383355, 4.5947957, 3.1383355),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.6939508, 0, 0.23020297, 1), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.76666665, 0.8666667),
+"transitions": PackedFloat32Array(2.3784163, 0.39229208, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 0.645, 1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nvhio"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nvhio"]
+_data = {
+&"RESET": SubResource("Animation_nvhio"),
+&"attack": SubResource("Animation_c612j")
+}
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pm1ix"]
 radius = 0.4975586
@@ -30,15 +108,30 @@ script = ExtResource("2_gwp0s")
 script = ExtResource("4_p8c51")
 body = NodePath("../..")
 speed = 5.0
-next_state = NodePath("../OnShipState")
+next_state = NodePath("../walkTowardsPlayerState")
 
-[node name="OnShipState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("nav_agent", "body")]
+[node name="walkTowardsPlayerState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("nav_agent", "body", "attack_state")]
 script = ExtResource("3_ggo2l")
 nav_agent = NodePath("../../NavigationAgent3D")
 body = NodePath("../..")
 attack_scene = ExtResource("5_nvo1f")
+attack_state = NodePath("../crabAttackState")
 attack_delay = 0.25
 attack_distance = 2.0
+
+[node name="crabAttackState" type="Node" parent="MovementStateHandler" node_paths=PackedStringArray("walk_state", "body")]
+script = ExtResource("6_c612j")
+jump_height = 6.0
+jump_length = 12.0
+walk_state = NodePath("../walkTowardsPlayerState")
+attack_scene = ExtResource("5_nvo1f")
+body = NodePath("../..")
+
+[node name="attackChargeAnimator" type="AnimationPlayer" parent="MovementStateHandler/crabAttackState"]
+root_node = NodePath("../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_nvhio")
+}
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.831331, 0)
