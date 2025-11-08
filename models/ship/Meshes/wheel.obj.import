@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ben3v6x2rlqlv"
+path="res://.godot/imported/wheel.obj-066183a0cc3ba0edd86d2cfefc06c05a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/wheel.obj-066183a0cc3ba0edd86d2cfefc06c05a.mesh"]
+
+source_file="res://models/ship/Meshes/wheel.obj"
+dest_files=["res://.godot/imported/wheel.obj-066183a0cc3ba0edd86d2cfefc06c05a.mesh", "res://.godot/imported/wheel.obj-066183a0cc3ba0edd86d2cfefc06c05a.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(3.5, 3.5, 3.5)
+offset_mesh=Vector3(-23, -3.45, 0)
+force_disable_mesh_compression=false
