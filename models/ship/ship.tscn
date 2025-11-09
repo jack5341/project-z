@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://xqygc3dedr2h"]
+[gd_scene load_steps=38 format=3 uid="uid://xqygc3dedr2h"]
 
 [ext_resource type="Texture2D" uid="uid://dihqewgemastu" path="res://models/ship/Meshes/rear.png" id="1_a0fk5"]
 [ext_resource type="ArrayMesh" uid="uid://dck2l0doi2eng" path="res://models/ship/Meshes/rear.obj" id="1_lugwd"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dv8hvaijykgp4" path="res://models/ship/Meshes/Wheel.png" id="7_wu6fv"]
 [ext_resource type="Texture2D" uid="uid://dhsbkqrthg21s" path="res://models/ship/Meshes/Box.png" id="9_evq1r"]
 [ext_resource type="ArrayMesh" uid="uid://b5ovpp250djs0" path="res://models/ship/Meshes/box.obj" id="9_ib3tc"]
+[ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="15_3xbsa"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_oygni"]
 vertices = PackedVector3Array(-3.7648563, 1.4371824, -26.456985, 2.9851437, 1.4371824, -26.456985, 2.9851437, 1.4371824, -34.456985, -3.7648563, 1.4371824, -34.456985, 10.485144, 1.1871824, -10.706985, 10.485144, 1.1871824, -11.706985, 9.235144, 1.1871824, -11.706985, 8.985144, 1.1871824, -10.706985, -6.2648563, 1.4371824, -20.456985, -9.264856, 1.1871824, -12.206985, -9.264856, 1.1871824, -10.206985, 8.735144, 1.1871824, -10.206985, 5.9851437, 1.4371824, -20.456985, 3.2351437, 1.4371824, -24.456985, 8.735144, 1.1871824, -12.206985, -9.764856, 1.1871824, -11.706985, -11.514856, 1.1871824, -11.956985, -11.514856, 1.1871824, -11.206985, -9.514856, 1.1871824, -11.206985, -4.0148563, 1.4371824, -24.456985, 8.235144, 1.4371824, -21.206985, 10.485144, 1.1871824, -15.956985, 10.485144, 1.4371824, -24.456985, -11.264856, 1.4371824, -24.456985, -11.514856, 1.1871824, -14.456985, -9.014856, 1.4371824, -20.706985, -7.7648563, 1.4371824, -21.206985, 8.735144, 5.6871824, -20.206985, 8.235144, 5.6871824, -20.456985, 7.2351437, 5.6871824, -19.956985, 9.735144, 5.6871824, -12.706985, 11.235144, 5.6871824, -13.206985, -7.5148563, 5.6871824, -19.456985, -8.264856, 5.6871824, -20.206985, -9.014856, 5.6871824, -20.206985, -11.764856, 5.6871824, -13.456985, -10.264856, 5.6871824, -12.706985, -11.764856, 5.6871824, -2.7069855, -10.264856, 5.6871824, -2.4569855, -10.264856, 5.6871824, -10.206985, -11.764856, 5.6871824, -10.206985, 1.7351437, 1.1871824, 8.793015, 1.9851437, 1.1871824, 9.293015, 8.735144, 1.1871824, 9.293015, -9.264856, 1.1871824, 10.043015, -2.7648563, 1.1871824, 10.043015, -2.0148563, 1.1871824, 8.793015, 9.735144, 5.6871824, -9.706985, 9.735144, 5.6871824, -2.2069855, 11.235144, 5.6871824, -2.2069855, 11.235144, 5.6871824, -9.706985, -11.764856, 5.6871824, -0.7069855, -11.764856, 5.6871824, 6.7930145, -10.264856, 5.6871824, 6.7930145, -10.264856, 5.6871824, -0.7069855, 9.735144, 5.6871824, -0.7069855, 9.735144, 5.6871824, 6.7930145, 11.235144, 5.6871824, 6.7930145, 11.235144, 5.6871824, -0.7069855, -11.764856, 5.6871824, 8.293015, -11.764856, 5.6871824, 16.043015, -10.264856, 5.6871824, 16.043015, -10.264856, 5.6871824, 8.293015, 9.735144, 5.6871824, 8.293015, 9.735144, 5.6871824, 15.793015, 11.235144, 5.6871824, 15.793015, 11.235144, 5.6871824, 8.293015, 1.7351437, 1.1871824, 11.793015, -0.0148563385, 1.1871824, 11.793015, -0.0148563385, 1.9371824, 15.793015, 2.4851437, 1.1871824, 11.293015, 8.735144, 1.9371824, 15.793015, 8.735144, 1.1871824, 13.193016, 4.2151794, 1.1871824, 13.050976, 2.4851437, 1.1871824, 9.793015, -1.2648563, 4.6871824, 9.793015, -1.2648563, 4.6871824, 10.793015, 0.98514366, 4.6871824, 10.793015, 0.98514366, 4.6871824, 9.793015, -2.5148563, 1.1871824, 11.543015, -1.2648563, 1.1871824, 13.668015, -9.264856, 1.9371824, 15.793015, -9.264856, 1.1871824, 12.918015)
@@ -59,14 +60,14 @@ albedo_texture = ExtResource("9_evq1r")
 [sub_resource type="BoxShape3D" id="BoxShape3D_evq1r"]
 size = Vector3(2.3166504, 4.0150146, 2.588066)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_vlt18"]
-size = Vector3(11.383362, 40.04254, 11.354919)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lugwd"]
 albedo_texture = ExtResource("2_lugwd")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a0fk5"]
 albedo_texture = ExtResource("4_pkdwe")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3xbsa"]
+size = Vector3(8.946011, 8.985352, 11.297394)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pkdwe"]
 albedo_texture = ExtResource("7_a0fk5")
@@ -282,116 +283,146 @@ mesh = ExtResource("9_ib3tc")
 transform = Transform3D(0.36391103, -0.13235894, 0.92198175, 0.11617519, 0.98857236, 0.0960637, -0.9241605, 0.072152786, 0.37512928, 0.17716467, 1.4783009, -0.13800813)
 shape = SubResource("BoxShape3D_evq1r")
 
-[node name="Part1" type="Area3D" parent="."]
+[node name="ShipPart1" type="Node3D" parent="."]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -6.25, -0.4, -12.466971)
 script = ExtResource("2_vlt18")
-body_group = "ship_parts"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Part1"]
-transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, -0.11831665, 0.98075795, 0.060699463)
-shape = SubResource("BoxShape3D_vlt18")
-
-[node name="PlankType1" type="MeshInstance3D" parent="Part1"]
+[node name="PlankType1" type="MeshInstance3D" parent="ShipPart1"]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -0.19247818, 0.22649422, -0.18516445)
 material_override = SubResource("StandardMaterial3D_lugwd")
 mesh = ExtResource("3_a0fk5")
 
-[node name="PlankBroken" type="MeshInstance3D" parent="Part1"]
+[node name="PlankBroken" type="MeshInstance3D" parent="ShipPart1"]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -0.192, 0.146, -0.185)
 material_override = SubResource("StandardMaterial3D_a0fk5")
 mesh = ExtResource("3_a0fk5")
 
-[node name="Part2" type="Area3D" parent="."]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -6.25, -0.4, -1.105056)
-script = ExtResource("2_vlt18")
+[node name="AttackableBody" type="Area3D" parent="ShipPart1"]
+script = ExtResource("15_3xbsa")
+owner_path = NodePath("..")
 body_group = "ship_parts"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Part2"]
-transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, -0.11831665, 0.98075795, 0.060699463)
-shape = SubResource("BoxShape3D_vlt18")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipPart1/AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1260662, -3.0119176, 0.061725616)
+shape = SubResource("BoxShape3D_3xbsa")
 
-[node name="PlankType1" type="MeshInstance3D" parent="Part2"]
+[node name="ShipPart2" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -6.25, -0.4, -1.1781883)
+script = ExtResource("2_vlt18")
+
+[node name="AttackableBody" type="Area3D" parent="ShipPart2"]
+script = ExtResource("15_3xbsa")
+owner_path = NodePath("..")
+body_group = "ship_parts"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipPart2/AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17492676, -3.0119176, -0.14163208)
+shape = SubResource("BoxShape3D_3xbsa")
+
+[node name="PlankType1" type="MeshInstance3D" parent="ShipPart2"]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -0.19247818, 0.22649422, -0.18516445)
 material_override = SubResource("StandardMaterial3D_lugwd")
 mesh = ExtResource("3_a0fk5")
 
-[node name="PlankBroken" type="MeshInstance3D" parent="Part2"]
+[node name="PlankBroken" type="MeshInstance3D" parent="ShipPart2"]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -0.192, 0.146, -0.185)
 material_override = SubResource("StandardMaterial3D_a0fk5")
 mesh = ExtResource("3_a0fk5")
 
-[node name="Part3" type="Area3D" parent="."]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -6.25, -0.4, 10.275425)
+[node name="ShipPart3" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -6.25, -0.4, 10.196731)
 script = ExtResource("2_vlt18")
+
+[node name="AttackableBody" type="Area3D" parent="ShipPart3"]
+script = ExtResource("15_3xbsa")
+owner_path = NodePath("..")
 body_group = "ship_parts"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Part3"]
-transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, -0.11831665, 0.98075795, 0.060699463)
-shape = SubResource("BoxShape3D_vlt18")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipPart3/AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17492676, -3.0119176, -0.14163208)
+shape = SubResource("BoxShape3D_3xbsa")
 
-[node name="PlankType1" type="MeshInstance3D" parent="Part3"]
+[node name="PlankType1" type="MeshInstance3D" parent="ShipPart3"]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -0.19247818, 0.22649422, -0.18516445)
 material_override = SubResource("StandardMaterial3D_pkdwe")
 mesh = ExtResource("3_a0fk5")
 
-[node name="PlankBroken" type="MeshInstance3D" parent="Part3"]
+[node name="PlankBroken" type="MeshInstance3D" parent="ShipPart3"]
 transform = Transform3D(-4.3711385e-08, 0, 0.99999994, 0, 1, 0, -0.99999994, 0, -4.3711385e-08, -0.192, 0.146, -0.185)
 material_override = SubResource("StandardMaterial3D_a0fk5")
 mesh = ExtResource("3_a0fk5")
 
-[node name="Part4" type="Area3D" parent="."]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.1262493, -0.4, 10.317051)
+[node name="ShipPart4" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.0953465, -0.4, 10.196731)
 script = ExtResource("2_vlt18")
+
+[node name="AttackableBody" type="Area3D" parent="ShipPart4"]
+script = ExtResource("15_3xbsa")
+owner_path = NodePath("..")
 body_group = "ship_parts"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Part4"]
-transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, -0.11831665, 0.98075795, 0.060699463)
-shape = SubResource("BoxShape3D_vlt18")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipPart4/AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17492676, -3.0119176, -0.14163208)
+shape = SubResource("BoxShape3D_3xbsa")
 
-[node name="PlankType1" type="MeshInstance3D" parent="Part4"]
+[node name="PlankType1" type="MeshInstance3D" parent="ShipPart4"]
 transform = Transform3D(-4.371139e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.371139e-08, -0.046304226, 0.22649422, 0.2729044)
 material_override = SubResource("StandardMaterial3D_lugwd")
 mesh = ExtResource("3_a0fk5")
 
-[node name="PlankBroken" type="MeshInstance3D" parent="Part4"]
+[node name="PlankBroken" type="MeshInstance3D" parent="ShipPart4"]
 transform = Transform3D(-4.371139e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.371139e-08, -0.04677868, 0.146, 0.27272892)
 material_override = SubResource("StandardMaterial3D_a0fk5")
 mesh = ExtResource("3_a0fk5")
 
-[node name="Part5" type="Area3D" parent="."]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.1262493, -0.4, -1.0117664)
+[node name="ShipPart5" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.0953465, -0.4, -1.1025839)
 script = ExtResource("2_vlt18")
+
+[node name="AttackableBody" type="Area3D" parent="ShipPart5"]
+script = ExtResource("15_3xbsa")
+owner_path = NodePath("..")
 body_group = "ship_parts"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Part5"]
-transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, -0.11831665, 0.98075795, 0.060699463)
-shape = SubResource("BoxShape3D_vlt18")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipPart5/AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17492676, -3.0119176, -0.14163208)
+shape = SubResource("BoxShape3D_3xbsa")
 
-[node name="PlankType1" type="MeshInstance3D" parent="Part5"]
+[node name="PlankType1" type="MeshInstance3D" parent="ShipPart5"]
 transform = Transform3D(-4.371139e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.371139e-08, -0.046304226, 0.22649422, 0.2729044)
 material_override = SubResource("StandardMaterial3D_nib4r")
 mesh = ExtResource("3_a0fk5")
 
-[node name="PlankBroken" type="MeshInstance3D" parent="Part5"]
+[node name="PlankBroken" type="MeshInstance3D" parent="ShipPart5"]
 transform = Transform3D(-4.371139e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.371139e-08, -0.04677868, 0.146, 0.27272892)
 material_override = SubResource("StandardMaterial3D_a0fk5")
 mesh = ExtResource("3_a0fk5")
 
-[node name="Part6" type="Area3D" parent="."]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.1262493, -0.4, -12.373613)
+[node name="ShipPart6" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 5.0953465, -0.4, -12.360417)
 script = ExtResource("2_vlt18")
+
+[node name="AttackableBody" type="Area3D" parent="ShipPart6"]
+script = ExtResource("15_3xbsa")
+owner_path = NodePath("..")
 body_group = "ship_parts"
+metadata/_custom_type_script = "uid://p5f5bttudgf6"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Part6"]
-transform = Transform3D(1, 0, 0, 0, 0.20000006, 0, 0, 0, 1, -0.11831665, 0.98075795, 0.060699463)
-shape = SubResource("BoxShape3D_vlt18")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ShipPart6/AttackableBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17492676, -3.0119176, -0.14163208)
+shape = SubResource("BoxShape3D_3xbsa")
 
-[node name="PlankType1" type="MeshInstance3D" parent="Part6"]
+[node name="PlankType1" type="MeshInstance3D" parent="ShipPart6"]
 transform = Transform3D(-4.371139e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.371139e-08, -0.046304226, 0.22649422, 0.2729044)
 material_override = SubResource("StandardMaterial3D_lugwd")
 mesh = ExtResource("3_a0fk5")
 
-[node name="PlankBroken" type="MeshInstance3D" parent="Part6"]
+[node name="PlankBroken" type="MeshInstance3D" parent="ShipPart6"]
 transform = Transform3D(-4.371139e-08, 0, -0.9999999, 0, 1, 0, 0.9999999, 0, -4.371139e-08, -0.04677868, 0.146, 0.27272892)
 material_override = SubResource("StandardMaterial3D_a0fk5")
 mesh = ExtResource("3_a0fk5")
@@ -570,10 +601,3 @@ mesh = SubResource("BoxMesh_oygni")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.5283337, 17.487305)
 visible = false
 mesh = SubResource("BoxMesh_oygni")
-
-[connection signal="on_break" from="Part1" to="Part1" method="_on_on_break"]
-[connection signal="on_break" from="Part2" to="Part2" method="_on_on_break"]
-[connection signal="on_break" from="Part3" to="Part3" method="_on_on_break"]
-[connection signal="on_break" from="Part4" to="Part4" method="_on_on_break"]
-[connection signal="on_break" from="Part5" to="Part5" method="_on_on_break"]
-[connection signal="on_break" from="Part6" to="Part6" method="_on_on_break"]

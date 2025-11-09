@@ -1,0 +1,692 @@
+[gd_scene load_steps=32 format=3 uid="uid://gcbxrkjmsvos"]
+
+[ext_resource type="Material" uid="uid://ddo1g7x44rq1h" path="res://shaders/water.tres" id="1_j25bp"]
+[ext_resource type="Script" uid="uid://bw7bj23lrc64y" path="res://utils/rock/rockspawner.gd" id="2_d6hyc"]
+[ext_resource type="PackedScene" uid="uid://xqygc3dedr2h" path="res://models/ship/ship.tscn" id="4_8wseo"]
+[ext_resource type="Script" uid="uid://c08fouanews6e" path="res://utils/wave/wave.gd" id="4_wm15w"]
+[ext_resource type="PackedScene" uid="uid://dn0vni80x0405" path="res://characters/player/player.tscn" id="5_kg4sb"]
+[ext_resource type="Script" uid="uid://bw3du25q58dly" path="res://models/ship/ship_swaying.gd" id="5_rm0u8"]
+[ext_resource type="Script" uid="uid://b1apnxdiwlw6l" path="res://utils/enemy_waves/enemy_wave_handler.gd" id="6_cwn0e"]
+[ext_resource type="PackedScene" uid="uid://bpekosltikvao" path="res://characters/enemies/crab/crab.tscn" id="7_rm0u8"]
+[ext_resource type="Script" uid="uid://6ix82m43o37x" path="res://utils/enemy_waves/spawn_spawner_event.gd" id="8_h0sva"]
+[ext_resource type="PackedScene" uid="uid://rmhxeutefyp3" path="res://characters/enemies/enemy_spawner.tscn" id="9_j48uv"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i5arm"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_wc5p8"]
+sky_material = SubResource("ProceduralSkyMaterial_i5arm")
+
+[sub_resource type="Environment" id="Environment_jsk3o"]
+background_mode = 2
+sky = SubResource("Sky_wc5p8")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_i5arm"]
+size = Vector2(500, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j25bp"]
+albedo_color = Color(0.133698, 0.210111, 0.149827, 1)
+
+[sub_resource type="Animation" id="Animation_brtpy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveStats/FullScreen/PanelContainer/MarginContainer/WaveLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Wave 1"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WaveStats/FullScreen/WaveProgress:value")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [37.05]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ship:amount")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Ship:time_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.0]
+}
+
+[sub_resource type="Resource" id="Resource_rm0u8"]
+script = ExtResource("8_h0sva")
+spawner_scene = ExtResource("9_j48uv")
+enemy_scene = ExtResource("7_rm0u8")
+spawn_delay = 5.0
+max_enemies_spawned = 3
+max_spawn_time = 30.0
+position_randomness = Vector3(2, 0, 0)
+max_enemies_randomness = 1
+spawn_delay_randomness = 1.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_ju2js"]
+resource_name = "wave1"
+length = 25.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_rm0u8")],
+"method": &"execute_event"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WaveStats/FullScreen/PanelContainer/MarginContainer/WaveLabel:text")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Wave 1"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WaveStats/UIAnimator")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"WaveText"],
+"method": &"play"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WaveStats/FullScreen/WaveProgress:value")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 24.966667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Ship:amount")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Ship:time_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.0]
+}
+
+[sub_resource type="Resource" id="Resource_j48uv"]
+script = ExtResource("8_h0sva")
+spawner_scene = ExtResource("9_j48uv")
+enemy_scene = ExtResource("7_rm0u8")
+spawn_delay = 4.0
+max_enemies_spawned = 5
+max_spawn_time = 30.0
+position_randomness = Vector3(2, 0, 0)
+max_enemies_randomness = 1
+spawn_delay_randomness = 1.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_rm0u8"]
+resource_name = "wave2"
+length = 30.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_j48uv")],
+"method": &"execute_event"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WaveStats/FullScreen/PanelContainer/MarginContainer/WaveLabel:text")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Wave 2"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WaveStats/UIAnimator")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"WaveText"],
+"method": &"play"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WaveStats/FullScreen/WaveProgress:value")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 30),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Ship:amount")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.35]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Ship:time_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.0]
+}
+
+[sub_resource type="Resource" id="Resource_h0sva"]
+script = ExtResource("8_h0sva")
+spawner_scene = ExtResource("9_j48uv")
+enemy_scene = ExtResource("7_rm0u8")
+spawn_delay = 4.0
+max_enemies_spawned = 6
+max_spawn_time = 35.0
+position_randomness = Vector3(2, 0, 0)
+max_enemies_randomness = 1
+spawn_delay_randomness = 2.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_q8c4k"]
+resource_name = "wave3"
+length = 35.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [SubResource("Resource_h0sva")],
+"method": &"execute_event"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WaveStats/FullScreen/PanelContainer/MarginContainer/WaveLabel:text")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Wave 3"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WaveStats/UIAnimator")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"WaveText"],
+"method": &"play"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WaveStats/FullScreen/WaveProgress:value")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Ship:amount")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.4]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Ship:time_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.5]
+}
+
+[sub_resource type="Resource" id="Resource_brtpy"]
+script = ExtResource("8_h0sva")
+spawner_scene = ExtResource("9_j48uv")
+enemy_scene = ExtResource("7_rm0u8")
+spawn_delay = 4.0
+max_enemies_spawned = 8
+max_spawn_time = 40.0
+position_randomness = Vector3(2, 0, 0)
+max_enemies_randomness = 1
+spawn_delay_randomness = 2.0
+metadata/_custom_type_script = "uid://6ix82m43o37x"
+
+[sub_resource type="Animation" id="Animation_sgdfv"]
+resource_name = "wave4"
+length = 40.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 25.029984),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [SubResource("Resource_brtpy")],
+"method": &"execute_event"
+}, {
+"args": [SubResource("Resource_brtpy")],
+"method": &"execute_event"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WaveStats/FullScreen/PanelContainer/MarginContainer/WaveLabel:text")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Wave 4"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WaveStats/UIAnimator")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"WaveText"],
+"method": &"play"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WaveStats/FullScreen/WaveProgress:value")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 40),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 100.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Ship:amount")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.6]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Ship:time_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [4.0]
+}
+
+[sub_resource type="Animation" id="Animation_ktyde"]
+resource_name = "wave_win"
+length = 40.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("WaveEventHandler")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("WaveStats/FullScreen/PanelContainer/MarginContainer/WaveLabel:text")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["You Won!"]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("WaveStats/UIAnimator")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"WaveText"],
+"method": &"play"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("WaveStats/FullScreen/WaveProgress:value")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 40),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [100.0, 100.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Ship:amount")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.6]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Ship:time_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tq3bg"]
+_data = {
+&"RESET": SubResource("Animation_brtpy"),
+&"wave1": SubResource("Animation_ju2js"),
+&"wave2": SubResource("Animation_rm0u8"),
+&"wave3": SubResource("Animation_q8c4k"),
+&"wave4": SubResource("Animation_sgdfv"),
+&"wave_win": SubResource("Animation_ktyde")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rm0u8"]
+bg_color = Color(0.6, 0.6, 0.6, 0.30588236)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h0sva"]
+bg_color = Color(0.8672621, 0, 0.24471971, 1)
+
+[sub_resource type="Animation" id="Animation_j48uv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullScreen/PanelContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-4000, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_h0sva"]
+resource_name = "WaveText"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FullScreen/PanelContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 2.4, 3.9601734),
+"transitions": PackedFloat32Array(0.36602116, 6.964402, 6.964402, 1),
+"update": 0,
+"values": [Vector2(-500, 0), Vector2(360, 0), Vector2(360, 0), Vector2(1200, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_brtpy"]
+_data = {
+&"RESET": SubResource("Animation_j48uv"),
+&"WaveText": SubResource("Animation_h0sva")
+}
+
+[node name="Game" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0.119919, 0, 0)
+light_energy = 0.25
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jsk3o")
+
+[node name="water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8040102, 0)
+sorting_offset = -100.0
+material_override = ExtResource("1_j25bp")
+mesh = SubResource("PlaneMesh_i5arm")
+
+[node name="Floor" type="Node3D" parent="."]
+
+[node name="BottomFloor" type="CSGBox3D" parent="Floor"]
+material_override = SubResource("StandardMaterial3D_j25bp")
+size = Vector3(500, 1, 500)
+
+[node name="Rocks" type="MultiMeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06408, 0)
+script = ExtResource("2_d6hyc")
+spawn_count = 3000
+area_size = Vector2(500, 500)
+rock_scene_path = "uid://cdiug2preeho5"
+spawn_on_ready = true
+
+[node name="WaterWaveManager" type="Node" parent="."]
+script = ExtResource("4_wm15w")
+wave_count = 500
+wave_interval = 0.5
+max_concurrent = 500
+metadata/_custom_type_script = "uid://c08fouanews6e"
+
+[node name="Ship" parent="." instance=ExtResource("4_8wseo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.37009, -3)
+script = ExtResource("5_rm0u8")
+amount = 0.5
+
+[node name="Player" parent="." instance=ExtResource("5_kg4sb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6.2733703, -2.8)
+repair_range = 6.25
+
+[node name="WaveEventHandler" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.061429, 1.9044485, 21.356426)
+script = ExtResource("6_cwn0e")
+
+[node name="WaveAnimator" type="AnimationPlayer" parent="WaveEventHandler"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_tq3bg")
+}
+
+[node name="WaveStats" type="CanvasLayer" parent="."]
+
+[node name="This Is Just For the Prototype" type="Node" parent="WaveStats"]
+
+[node name="FullScreen" type="Control" parent="WaveStats"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="WaveStats/FullScreen"]
+layout_mode = 0
+offset_left = -4000.0
+offset_right = -3451.0
+offset_bottom = 149.0
+
+[node name="ColorRect" type="ColorRect" parent="WaveStats/FullScreen/PanelContainer"]
+layout_mode = 2
+color = Color(0.5404385, 0, 0.15059242, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="WaveStats/FullScreen/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 10
+
+[node name="WaveLabel" type="Label" parent="WaveStats/FullScreen/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 94
+text = "Wave 1"
+
+[node name="WaveProgress" type="ProgressBar" parent="WaveStats/FullScreen"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_rm0u8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_h0sva")
+value = 37.05
+show_percentage = false
+
+[node name="UIAnimator" type="AnimationPlayer" parent="WaveStats"]
+libraries = {
+&"": SubResource("AnimationLibrary_brtpy")
+}

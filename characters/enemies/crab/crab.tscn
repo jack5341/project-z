@@ -8,7 +8,34 @@
 [ext_resource type="Texture2D" uid="uid://dengkskkgif6q" path="res://characters/enemies/crab/crab.png" id="5_cl3ub"]
 [ext_resource type="PackedScene" uid="uid://dnf7kynmiqvch" path="res://characters/enemies/crab/crab_attack.tscn" id="5_nvo1f"]
 [ext_resource type="Script" uid="uid://bw1u0533ho41" path="res://characters/enemies/crab/crab_attack_state.gd" id="6_c612j"]
-[ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/attackable_body_healthbar.tscn" id="8_ptlxy"]
+[ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/healthbar.tscn" id="8_ptlxy"]
+
+[sub_resource type="Animation" id="Animation_nvhio"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_c612j"]
 resource_name = "attack"
@@ -52,33 +79,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(2.3784163, 0.39229208, 1),
 "update": 0,
 "values": [Vector3(1, 1, 1), Vector3(1, 0.645, 1), Vector3(1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_nvhio"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite3D:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nvhio"]
@@ -146,7 +146,7 @@ shape = SubResource("CapsuleShape3D_pm1ix")
 
 [node name="AttackableBody" type="Area3D" parent="."]
 script = ExtResource("5_ae4w6")
-max_health = 5
+owner_path = NodePath("..")
 body_group = "enemy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackableBody"]
@@ -158,8 +158,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.396541, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_nvo1f")
 
-[node name="AttackableBodyHealthbar" parent="." node_paths=PackedStringArray("attackable_body") instance=ExtResource("8_ptlxy")]
-attackable_body = NodePath("../AttackableBody")
-
-[connection signal="on_break" from="AttackableBody" to="." method="queue_free"]
-[connection signal="on_hit" from="AttackableBody" to="." method="knockback"]
+[node name="AttackableBodyHealthbar" parent="." instance=ExtResource("8_ptlxy")]
+health_entity_path = NodePath("..")

@@ -59,6 +59,10 @@ var tap_elapsed_right: float = 9999.0
 var is_sprinting: bool = false
 var tap_elapse_attack:float = 0
 
+@export_category("health")
+@export var max_hp := 10
+var hp : float
+
 # This is not called immidietly after attacking,
 # but is used by the animation player to add a 
 # slight delay. This is common in many games 
@@ -78,6 +82,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	model.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
 	player_animator.play("player_idle")
+	hp = max_hp
 	
 
 func _physics_process(delta: float) -> void:
@@ -205,7 +210,7 @@ func _find_repairable_ship_part():
 	for node in get_tree().get_nodes_in_group("ship_parts"):
 		if node is ShipPart:
 			var sp: ShipPart = node
-			if sp.collision_shape_3d.disabled or sp.mesh_instance_3d.visible:
+			if sp.get_is_broken():
 				var d := global_transform.origin.distance_squared_to(sp.global_transform.origin)
 				if d <= repair_range * repair_range and d < nearest_dist_sq:
 					nearest = sp
@@ -213,4 +218,7 @@ func _find_repairable_ship_part():
 	return nearest
 	
 func heal_player():
-	attackable_body.health = attackable_body.max_health
+	hp = max_hp
+
+func take_damage(damage_area: DamageArea):
+	hp -= damage_area.base_damage

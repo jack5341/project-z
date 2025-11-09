@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://fiv72rsrl2om"]
 
-[ext_resource type="Script" uid="uid://bkcfnm31lbmen" path="res://utils/combat/attackable_body_healthbar.gd" id="1_w5lsd"]
+[ext_resource type="Script" uid="uid://bkcfnm31lbmen" path="res://utils/combat/healthbar.gd" id="1_w5lsd"]
 
 [node name="AttackableBodyHealthbar" type="SubViewport"]
 transparent_bg = true

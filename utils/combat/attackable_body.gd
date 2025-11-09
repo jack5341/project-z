@@ -1,32 +1,27 @@
 extends Area3D
 
-#	A body that can be attacked and has HP
-#	Can be used by e.g. player, enemies and 
-#	Destructable parts of the ship
-#
-#	Set the collision mask of the area3d
+#	Set the body_group
 #	to determine what can hit it
 class_name AttackableBody
 
-signal on_break
+@export var owner_path: NodePath
+@export var body_group: String = ""
 
-signal on_hit(damage: float, knockback: Vector3)
-
-@export var max_health := 1
-
-@export var body_group:String = ""
-
-var health:float:
-	get: return health
-	set(new_health):
-		health = min(new_health, max_health)
-		if(new_health<=0):
-			print("attackable body broke: ", name, " health: ", health, " max_health: ", max_health, " new_health: ", new_health)
-			on_break.emit()
+var owner_entity: Node3D
 
 func _ready() -> void:
-	health = max_health
+	owner_entity = get_node(owner_path)
+	# Verify as early as possible that the owner
+	# exists and has the correct method
+	# Crashing as early as possible makes
+	# debugging easier!
+	assert(owner_entity)
+	assert(owner_entity.has_method("take_damage"))
 
-func hit(damage: float, knockback: Vector3):
-	health -= damage
-	on_hit.emit(damage, knockback)
+# TODO, if we include the object that hit the entity
+# in the take_damage function, we can define how the
+# entity reacts to being hit by different objects,
+# e.g. different knockbacks depending on weapon type
+func hit(damage_area:DamageArea):
+	if(owner_entity):
+		owner_entity.take_damage(damage_area)

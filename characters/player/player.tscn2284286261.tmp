@@ -83,9 +83,22 @@ _data = {
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 collision_layer = 2
 script = ExtResource("1_xxgcw")
+move_speed = null
+gravity = null
+wobble_amplitude = null
+wobble_speed = null
+max_stamina = null
+stamina_regen_rate = null
+repair_range = null
+jump_force = null
+dash_force = null
+dash_duration = null
 dash_cooldown = 0.5
+double_press_threshold = null
+sprint_speed = null
 attack_scene = ExtResource("2_5dc8e")
 attack_delay = 0.35
+max_health = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0162945, 0.00325489, -0.013339)
