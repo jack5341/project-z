@@ -571,9 +571,9 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.5666667, 2.4, 3.9601734),
-"transitions": PackedFloat32Array(0.36602116, 6.964402, 6.964402, 1),
+"transitions": PackedFloat32Array(0.45062476, 6.964402, 6.964402, 1),
 "update": 0,
-"values": [Vector2(-500, 0), Vector2(360, 0), Vector2(360, 0), Vector2(1200, 0)]
+"values": [Vector2(-1000, 0), Vector2(730, 0), Vector2(730, 0), Vector2(2000, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_brtpy"]
