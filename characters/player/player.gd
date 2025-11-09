@@ -220,5 +220,5 @@ func _find_repairable_ship_part():
 func heal_player():
 	hp = max_hp
 
-func take_damage(amount:float):
-	hp -= amount
+func take_damage(damage_area: DamageArea):
+	hp -= damage_area.base_damage

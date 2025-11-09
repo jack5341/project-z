@@ -5,9 +5,9 @@ extends Area3D
 class_name AttackableBody
 
 @export var owner_path: NodePath
-@export var body_group:String = ""
+@export var body_group: String = ""
 
-var owner_entity :Node3D
+var owner_entity: Node3D
 
 func _ready() -> void:
 	owner_entity = get_node(owner_path)
@@ -22,6 +22,6 @@ func _ready() -> void:
 # in the take_damage function, we can define how the
 # entity reacts to being hit by different objects,
 # e.g. different knockbacks depending on weapon type
-func hit(damage: float, _knockback: Vector3):
+func hit(damage_area:DamageArea):
 	if(owner_entity):
-		owner_entity.take_damage(damage)
+		owner_entity.take_damage(damage_area)

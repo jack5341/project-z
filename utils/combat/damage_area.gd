@@ -7,16 +7,11 @@ extends Area3D
 class_name DamageArea
 
 signal attackble_body_entered(area:AttackableBody)
+signal on_cause_damage()
 
 @export var base_damage:float = 1.0
 @export var base_knockback:float = 1.0
 @export var attackable_groups: Array[String] = []
-
-func get_knockback_vector(other_area: AttackableBody):
-	var delta_dist = (other_area.global_position - self.global_position)
-	delta_dist.y = 0
-	var dir = delta_dist.normalized()
-	return dir * base_knockback
 
 func _ready() -> void:
 	area_entered.connect(
@@ -28,6 +23,7 @@ func _ready() -> void:
 	attackble_body_entered.connect(
 		func(area: AttackableBody):
 			if(attackable_groups.has(area.body_group)):
-				area.hit(base_damage, get_knockback_vector(area))
+				on_cause_damage.emit()
+				area.hit(self)
 	)
 	

@@ -570,10 +570,3 @@ mesh = SubResource("BoxMesh_oygni")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.5283337, 17.487305)
 visible = false
 mesh = SubResource("BoxMesh_oygni")
-
-[connection signal="on_break" from="Part1" to="Part1" method="_on_on_break"]
-[connection signal="on_break" from="Part2" to="Part2" method="_on_on_break"]
-[connection signal="on_break" from="Part3" to="Part3" method="_on_on_break"]
-[connection signal="on_break" from="Part4" to="Part4" method="_on_on_break"]
-[connection signal="on_break" from="Part5" to="Part5" method="_on_on_break"]
-[connection signal="on_break" from="Part6" to="Part6" method="_on_on_break"]

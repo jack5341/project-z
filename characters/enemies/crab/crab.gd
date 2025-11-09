@@ -8,7 +8,7 @@ var hp:float
 func _ready() -> void:
 	hp = max_hp
 
-func knockback(_damage:float, dir: Vector3):
+func _knockback(_damage:float, dir: Vector3):
 	velocity += dir
 
 func get_target() -> Node3D:
@@ -26,9 +26,14 @@ func _physics_process(_delta: float) -> void:
 		walk_state.set_target(target_node.global_position)
 	move_and_slide()
 
-func take_damage(amount: float):
-	print("Crab got hit!")
-	hp -= amount
+func _get_knockback_vector(damage_area: DamageArea):
+	var delta_dist = (self.global_position - damage_area.global_position)
+	delta_dist.y = 0
+	var dir = delta_dist.normalized()
+	return dir * damage_area.base_knockback
+
+func take_damage(damage_area: DamageArea):
+	hp -= damage_area.base_damage
+	_knockback(damage_area.base_knockback, _get_knockback_vector(damage_area))
 	if(hp <= 0):
-		print("Crab died")
 		queue_free()
