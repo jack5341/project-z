@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dn0vni80x0405"]
+[gd_scene load_steps=23 format=3 uid="uid://dn0vni80x0405"]
 
 [ext_resource type="Script" uid="uid://djjlls6v0a3tt" path="res://characters/player/player.gd" id="1_xxgcw"]
 [ext_resource type="PackedScene" uid="uid://dsi3kjg0rfxxo" path="res://characters/player/player_slash.tscn" id="2_5dc8e"]
@@ -6,7 +6,13 @@
 [ext_resource type="Script" uid="uid://p5f5bttudgf6" path="res://utils/combat/attackable_body.gd" id="3_exd8k"]
 [ext_resource type="Script" uid="uid://0v1xexlkb3ai" path="res://characters/spine/spine_sprite.gd" id="4_dirf7"]
 [ext_resource type="PackedScene" uid="uid://fiv72rsrl2om" path="res://utils/combat/healthbar.tscn" id="5_ixbpm"]
+[ext_resource type="Script" uid="uid://3nnvvh8kvbfo" path="res://utils/state/state_machine.gd" id="6_sm"]
 [ext_resource type="AudioStream" uid="uid://bebdlxolwanas" path="res://assets/sounds/piratesgame.mp3" id="7_dirf7"]
+[ext_resource type="Script" uid="uid://mx7voe46o6th" path="res://characters/player/states/player_move_state.gd" id="8_ps_move"]
+[ext_resource type="Script" uid="uid://dm84yieix07w1" path="res://characters/player/states/player_dash_state.gd" id="9_ps_dash"]
+[ext_resource type="Script" uid="uid://dye5o73agas7c" path="res://characters/player/states/player_jump_state.gd" id="10_ps_jump"]
+[ext_resource type="Script" uid="uid://bkg3307036dsm" path="res://characters/player/states/player_idle_state.gd" id="11_ps_idle"]
+[ext_resource type="Script" uid="uid://bjtrmoyjcqt4m" path="res://characters/player/states/player_attack_state.gd" id="12_ps_attack"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_508ok"]
 size = Vector3(1.92041, 2.83291, 2.85197)
@@ -187,3 +193,32 @@ stream = ExtResource("7_dirf7")
 volume_db = -24.542
 autoplay = true
 parameters/looping = true
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("6_sm")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("11_ps_idle")
+
+[node name="MoveState" type="Node" parent="StateMachine"]
+script = ExtResource("8_ps_move")
+body = NodePath("../..")
+dash_state = NodePath("../DashState")
+jump_state = NodePath("../JumpState")
+idle_state = NodePath("../IdleState")
+attack_state = NodePath("../AttackState")
+
+[node name="DashState" type="Node" parent="StateMachine"]
+script = ExtResource("9_ps_dash")
+body = NodePath("../..")
+return_state = NodePath("../MoveState")
+
+[node name="JumpState" type="Node" parent="StateMachine"]
+script = ExtResource("10_ps_jump")
+body = NodePath("../..")
+return_state = NodePath("../MoveState")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("12_ps_attack")
+body = NodePath("../..")
+return_state = NodePath("../MoveState")
